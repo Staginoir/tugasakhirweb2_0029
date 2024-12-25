@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .sidebar {
             min-height: 100vh;
+            background-color: #f8f9fa;
             padding-top: 20px;
+        }
+        .sidebar .nav-link {
+            color: #333;
+        }
+        .sidebar .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
         }
         .card {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-brand {
-            font-weight: bold;
-            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -43,10 +52,10 @@
             <div class="col-md-2 bg-light sidebar">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="../admin/dashboard.php">Dashboard</a>
+                        <a class="nav-link active" href="<?= base_url('admin/dashboard'); ?>">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/master-data.php">Master Data Admin</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_users'); ?>">Master Data Admin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Master Data Siswa</a>

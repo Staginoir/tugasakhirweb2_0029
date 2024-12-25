@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\DashboardModel;
+use App\Helpers\StudentHelper;
 
 class AdminController extends BaseController
 {
@@ -25,7 +26,7 @@ class AdminController extends BaseController
         $username = session()->get('username');
         $totalSiswa = $this->dashboardModel->getTotalSiswa();
         $totalPrestasi = $this->dashboardModel->getTotalPrestasi();
-
+        
         // Data yang dikirim ke view
         $data = [
             'title' => 'Dashboard Admin',
@@ -58,7 +59,7 @@ class AdminController extends BaseController
         ];
 
         $this->userModel->insert($data);
-        return redirect()->to(base_url('admin/master-data'))->with('success', 'User berhasil ditambahkan.');
+        return redirect()->to(base_url('admin/master_data_users'))->with('success', 'User berhasil ditambahkan.');
     }
 
     // Fungsi untuk mengedit user
@@ -79,13 +80,16 @@ class AdminController extends BaseController
         }
 
         $this->userModel->update($id_user, $data);
-        return redirect()->to(base_url('admin/master-data'))->with('success', 'User berhasil diubah.');
+        return redirect()->to(base_url('admin/master_data_users'))->with('success', 'User berhasil diubah.');
     }
 
     // Fungsi untuk menghapus user
     public function deleteUser($id_user)
     {
         $this->userModel->delete($id_user);
-        return redirect()->to(base_url('admin/master-data'))->with('success', 'User berhasil dihapus.');
+        return redirect()->to(base_url('admin/master_data_users'))->with('success', 'User berhasil dihapus.');
     }
+
+    
+
 }

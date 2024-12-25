@@ -24,9 +24,20 @@ class SiswaController extends ResourceController
         return $this->respond($data);
     }
 
-    public function create()
+        public function create()
     {
         $data = $this->request->getPost();
+
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'nama' => 'required|min_length[3]|max_length[50]',
+            'kelas' => 'required',
+            'nis' => 'required|is_unique[siswa.nis]',
+        ]);
+
+        if (!$validation->run($data)) {
+            return $this->fail($validation->getErrors());
+        }
 
         if (!$this->model->insert($data)) {
             return $this->fail($this->model->errors());
@@ -34,6 +45,7 @@ class SiswaController extends ResourceController
 
         return $this->respondCreated($data, 'Siswa created');
     }
+
 
     public function update($id = null)
     {
