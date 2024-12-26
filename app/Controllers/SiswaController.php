@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\MSiswaModel;
 use CodeIgniter\RESTful\ResourceController;
 
 class SiswaController extends ResourceController
@@ -19,51 +18,51 @@ class SiswaController extends ResourceController
     {
         $data = $this->model->find($id);
         if (!$data) {
-            return $this->failNotFound('Siswa not found');
+            return $this->failNotFound('Siswa tidak ditemukan');
         }
         return $this->respond($data);
     }
 
-        public function create()
+    public function create()
     {
         $data = $this->request->getPost();
-
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nama' => 'required|min_length[3]|max_length[50]',
-            'kelas' => 'required',
-            'nis' => 'required|is_unique[siswa.nis]',
-        ]);
-
-        if (!$validation->run($data)) {
-            return $this->fail($validation->getErrors());
-        }
 
         if (!$this->model->insert($data)) {
             return $this->fail($this->model->errors());
         }
 
-        return $this->respondCreated($data, 'Siswa created');
+        $createdData = $this->model->find($this->model->insertID());
+        return $this->respondCreated($createdData, 'Siswa berhasil dibuat');
     }
-
 
     public function update($id = null)
     {
         $data = $this->request->getRawInput();
 
+        // Pastikan siswa dengan ID tersebut ada
+        if (!$this->model->find($id)) {
+            return $this->failNotFound('Siswa tidak ditemukan');
+        }
+
         if (!$this->model->update($id, $data)) {
             return $this->fail($this->model->errors());
         }
 
-        return $this->respondUpdated($data, 'Siswa updated');
+        $updatedData = $this->model->find($id);
+        return $this->respondUpdated($updatedData, 'Siswa berhasil diperbarui');
     }
 
     public function delete($id = null)
     {
-        if (!$this->model->delete($id)) {
-            return $this->fail('Failed to delete Siswa');
+        // Pastikan siswa dengan ID tersebut ada
+        if (!$this->model->find($id)) {
+            return $this->failNotFound('Siswa tidak ditemukan');
         }
 
-        return $this->respondDeleted(['id' => $id], 'Siswa deleted');
+        if (!$this->model->delete($id)) {
+            return $this->fail('Gagal menghapus Siswa');
+        }
+
+        return $this->respondDeleted(['nis_siswa' => $id], 'Siswa berhasil dihapus');
     }
 }

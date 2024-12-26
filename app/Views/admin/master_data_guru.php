@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Master Data User</title>
+    <title>Dashboard Admin - Master Data Guru</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         .sidebar {
@@ -34,7 +34,6 @@
             <a class="navbar-brand" href="#">PRESISADMIN</a>
             <div class="ms-auto d-flex align-items-center">
                 <span class="navbar-text text-light me-3">Admin</span>
-
             </div>
         </div>
     </nav>
@@ -48,13 +47,13 @@
                         <a class="nav-link" href="<?= base_url('admin/dashboard'); ?>">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?= base_url('admin/master_data_users'); ?>">Master Data Admin</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_users'); ?>">Master Data Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/master_data_siswa'); ?>">Master Data Siswa</a>
+                        <a class="nav-link" href="#">Master Data Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Master Data Guru</a>
+                        <a class="nav-link active" href="#">Master Data Guru</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Master Data Kelas</a>
@@ -76,74 +75,70 @@
 
             <!-- Main Content -->
             <div class="col-md-10 mt-4">
-                <h2 class="mb-4">Master Data User</h2>
+                <h2 class="mb-4">Master Data Guru</h2>
 
-                <!-- Button untuk menambahkan user baru -->
-                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addUserModal">Tambah User</button>
+                <!-- Button untuk menambahkan guru baru -->
+                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Tambah Guru</button>
 
                 <!-- Tabel Data -->
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
-                            <th>Username</th>
-                            <th>Role</th>
-                            <th>Access Level</th>
+                            <th>Nama</th>
+                            <th>NIP</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Kontak</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($users as $index => $user): ?>
+                        <?php foreach ($teachers as $index => $teacher): ?>
                             <tr>
                                 <td><?= $index + 1; ?></td>
-                                <td><?= $user['username']; ?></td>
-                                <td><?= $user['role']; ?></td>
-                                <td><?= $user['access_level']; ?></td>
-                                <td><?= $user['status']; ?></td>
+                                <td><?= $teacher['name']; ?></td>
+                                <td><?= $teacher['nip']; ?></td>
+                                <td><?= $teacher['subject']; ?></td>
+                                <td><?= $teacher['contact']; ?></td>
+                                <td><?= $teacher['status'] == 1 ? 'Aktif' : 'Nonaktif'; ?></td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal-<?= $user['id_user']; ?>">Edit</button>
-                                    <a href="<?= base_url('admin/delete-user/' . $user['id_user']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editTeacherModal-<?= $teacher['id']; ?>">Edit</button>
+                                    <a href="<?= base_url('admin/delete-teacher/' . $teacher['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>
                                 </td>
                             </tr>
 
-                            <!-- Modal Edit User -->
-                            <div class="modal fade" id="editUserModal-<?= $user['id_user']; ?>" tabindex="-1" aria-hidden="true">
+                            <!-- Modal Edit Teacher -->
+                            <div class="modal fade" id="editTeacherModal-<?= $teacher['id']; ?>" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <form action="<?= base_url('admin/edit-user/' . $user['id_user']); ?>" method="post">
+                                    <form action="<?= base_url('admin/edit-teacher/' . $teacher['id']); ?>" method="post">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Edit User</h5>
+                                                <h5 class="modal-title">Edit Guru</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Username</label>
-                                                    <input type="text" class="form-control" name="username" value="<?= $user['username']; ?>" required>
+                                                    <label for="name" class="form-label">Nama</label>
+                                                    <input type="text" class="form-control" name="name" value="<?= $teacher['name']; ?>" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="password" class="form-label">Password (Kosongkan jika tidak diubah)</label>
-                                                    <input type="password" class="form-control" name="password">
+                                                    <label for="nip" class="form-label">NIP</label>
+                                                    <input type="text" class="form-control" name="nip" value="<?= $teacher['nip']; ?>" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select name="role" class="form-select">
-                                                        <option value="Admin" <?= $user['role'] == 'Admin' ? 'selected' : ''; ?>>Admin</option>
-                                                        <option value="Kesiswaan" <?= $user['role'] == 'Kesiswaan' ? 'selected' : ''; ?>>Kesiswaan</option>
-                                                        <option value="Wakasek" <?= $user['role'] == 'Wakasek' ? 'selected' : ''; ?>>Wakasek</option>
-                                                        <option value="Wali Kelas" <?= $user['role'] == 'Wali Kelas' ? 'selected' : ''; ?>>Wali Kelas</option>
-                                                        <option value="Siswa" <?= $user['role'] == 'Siswa' ? 'selected' : ''; ?>>Siswa</option>
-                                                    </select>
+                                                    <label for="subject" class="form-label">Mata Pelajaran</label>
+                                                    <input type="text" class="form-control" name="subject" value="<?= $teacher['subject']; ?>" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="access_level" class="form-label">Access Level</label>
-                                                    <input type="number" class="form-control" name="access_level" value="<?= $user['access_level']; ?>" required>
+                                                    <label for="contact" class="form-label">Kontak</label>
+                                                    <input type="text" class="form-control" name="contact" value="<?= $teacher['contact']; ?>" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="status" class="form-label">Status</label>
                                                     <select name="status" class="form-select">
-                                                        <option value="1" <?= $user['status'] == 1 ? 'selected' : ''; ?>>Aktif</option>
-                                                        <option value="0" <?= $user['status'] == 0 ? 'selected' : ''; ?>>Nonaktif</option>
+                                                        <option value="1" <?= $teacher['status'] == 1 ? 'selected' : ''; ?>>Aktif</option>
+                                                        <option value="0" <?= $teacher['status'] == 0 ? 'selected' : ''; ?>>Nonaktif</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -162,37 +157,31 @@
         </div>
     </div>
 
-    <!-- Modal Tambah User -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <!-- Modal Tambah Guru -->
+    <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="<?= base_url('admin/add-user'); ?>" method="post">
+            <form action="<?= base_url('admin/add-teacher'); ?>" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah User</h5>
+                        <h5 class="modal-title">Tambah Guru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" required>
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" class="form-control" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <label for="nip" class="form-label">NIP</label>
+                            <input type="text" class="form-control" name="nip" required>
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select name="role" class="form-select">
-                                <option value="Admin">Admin</option>
-                                <option value="Kesiswaan">Kesiswaan</option>
-                                <option value="Wakasek">Wakasek</option>
-                                <option value="Wali Kelas">Wali Kelas</option>
-                                <option value="Siswa">Siswa</option>
-                            </select>
+                            <label for="subject" class="form-label">Mata Pelajaran</label>
+                            <input type="text" class="form-control" name="subject" required>
                         </div>
                         <div class="mb-3">
-                            <label for="access_level" class="form-label">Access Level</label>
-                            <input type="number" class="form-control" name="access_level" required>
+                            <label for="contact" class="form-label">Kontak</label>
+                            <input type="text" class="form-control" name="contact" required>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
