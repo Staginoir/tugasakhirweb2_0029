@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Master Data Guru</title>
+    <title>Dashboard Admin - Master Data Kelas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         .sidebar {
@@ -51,10 +51,10 @@
                         <a class="nav-link" href="<?= base_url('admin/master_data_siswa'); ?>">Master Data Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?= base_url('admin/master_data_guru'); ?>">Master Data Guru</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_guru'); ?>">Master Data Guru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/master_data_kelas'); ?>">Master Data Kelas</a>
+                        <a class="nav-link active" href="<?= base_url('admin/master_data_kelas'); ?>">Master Data Kelas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
@@ -69,58 +69,60 @@
                 </ul>
             </div>
             <div class="col-md-10 mt-4">
-                <h2 class="mb-4">Master Data Guru</h2>
-                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Tambah Guru</button>
+                <h2 class="mb-4">Master Data Kelas</h2>
+                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addKelasModal">Tambah Kelas</button>
 
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
-                            <th>NIP</th>
-                            <th>Kontak</th>
-                            <th>Status Jabatan</th>
+                            <th>ID Kelas</th>
+                            <th>Level</th>
+                            <th>Nama Kelas</th>
+                            <th>ID Guru</th>
+                            <th>Kapasitas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($teachers as $index => $teacher): ?>
+                        <?php foreach ($classes as $index => $class): ?>
                         <tr>
                             <td><?= $index + 1; ?></td>
-                            <td><?= $teacher['nama_guru']; ?></td>
-                            <td><?= $teacher['nip_guru']; ?></td>
-                            <td><?= $teacher['kontak_guru']; ?></td>
-                            <td><?= $teacher['status_jabatan']; ?></td>
+                            <td><?= $class['id_kelas']; ?></td>
+                            <td><?= $class['level_kelas']; ?></td>
+                            <td><?= $class['nama_kelas']; ?></td>
+                            <td><?= $class['id_guru']; ?></td>
+                            <td><?= $class['kapasitas']; ?></td>
                             <td>
-                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editTeacherModal-<?= $teacher['id_guru']; ?>">Edit</button>
-                                <a href="<?= base_url('admin/delete-teacher/' . $teacher['id_guru']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>
+                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editKelasModal-<?= $class['id_kelas']; ?>">Edit</button>
+                                <a href="<?= base_url('admin/delete-kelas/' . $class['id_kelas']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>
                             </td>
                         </tr>
 
-                        <div class="modal fade" id="editTeacherModal-<?= $teacher['id_guru']; ?>" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade" id="editKelasModal-<?= $class['id_kelas']; ?>" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
-                                <form action="<?= base_url('admin/edit-guru/' . $teacher['id_guru']); ?>" method="post">
+                                <form action="<?= base_url('admin/edit-kelas/' . $class['id_kelas']); ?>" method="post">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Edit Guru</h5>
+                                            <h5 class="modal-title">Edit Kelas</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label class="form-label">Nama</label>
-                                                <input type="text" class="form-control" name="nama_guru" value="<?= $teacher['nama_guru']; ?>" required>
+                                                <label class="form-label">Level</label>
+                                                <input type="text" class="form-control" name="level_kelas" value="<?= $class['level_kelas']; ?>" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">NIP</label>
-                                                <input type="text" class="form-control" name="nip_guru" value="<?= $teacher['nip_guru']; ?>" required>
+                                                <label class="form-label">Nama Kelas</label>
+                                                <input type="text" class="form-control" name="nama_kelas" value="<?= $class['nama_kelas']; ?>" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Kontak</label>
-                                                <input type="text" class="form-control" name="kontak_guru" value="<?= $teacher['kontak_guru']; ?>" required>
+                                                <label class="form-label">ID Guru</label>
+                                                <input type="text" class="form-control" name="id_guru" value="<?= $class['id_guru']; ?>" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Status Jabatan</label>
-                                                <input type="text" class="form-control" name="status_jabatan" value="<?= $teacher['status_jabatan']; ?>" required>
+                                                <label class="form-label">Kapasitas</label>
+                                                <input type="text" class="form-control" name="kapasitas" value="<?= $class['kapasitas']; ?>" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -138,30 +140,34 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addKelasModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="<?= base_url('admin/add-guru'); ?>" method="post">
+            <form action="<?= base_url('admin/add-kelas'); ?>" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Guru</h5>
+                        <h5 class="modal-title">Tambah Kelas</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama_guru" required>
+                            <label class="form-label">ID Kelas</label>
+                            <input type="text" class="form-control" name="id_kelas" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">NIP</label>
-                            <input type="text" class="form-control" name="nip_guru" required>
+                            <label class="form-label">Level</label>
+                            <input type="text" class="form-control" name="level_kelas" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kontak</label>
-                            <input type="text" class="form-control" name="kontak_guru" required>
+                            <label class="form-label">Nama Kelas</label>
+                            <input type="text" class="form-control" name="nama_kelas" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Status Jabatan</label>
-                            <input type="text" class="form-control" name="status_jabatan" required>
+                            <label class="form-label">ID Guru</label>
+                            <input type="text" class="form-control" name="id_guru" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kapasitas</label>
+                            <input type="text" class="form-control" name="kapasitas" required>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -54,13 +54,13 @@
                         <a class="nav-link" href="<?= base_url('admin/master_data_siswa'); ?>">Master Data Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Master Data Guru</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_guru'); ?>">Master Data Guru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Master Data Kelas</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_kelas'); ?>">Master Data Kelas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Master Data Ekstrakurikuler</a>
+                        <a class="nav-link" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pelaporan Prestasi</a>

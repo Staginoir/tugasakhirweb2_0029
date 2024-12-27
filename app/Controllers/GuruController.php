@@ -54,4 +54,5 @@ class GuruController extends ResourceController
 
         return $this->respondDeleted(['id' => $id], 'Guru deleted');
     }
+    
 }
