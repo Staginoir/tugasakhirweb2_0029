@@ -33,13 +33,22 @@ class RoleFilter implements FilterInterface
             return redirect()->to('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Periksa level akses pengguna
-        $userLevel = $session->get('access_level'); // Ambil akses level dari session
+        // Periksa apakah level akses diatur
+        if (empty($arguments)) {
+            return redirect()->to('/unauthorized')->with('error', 'Akses ke halaman ini tidak diatur.');
+        }
 
-        // Jika level akses tidak sesuai dengan yang diperlukan
-        if (!in_array($userLevel, $arguments)) {
+        // Pastikan argumen selalu array
+        if (!is_array($arguments)) {
+            $arguments = [$arguments];
+        }
+
+        // Periksa level akses pengguna
+        if (!in_array($accessLevel, $arguments)) {
             return redirect()->to('/unauthorized')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
+    
+    
     
     }
 

@@ -15,19 +15,19 @@
 
     <form action="/login" method="post">
         <?= csrf_field() ?>
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" value="<?= old('username') ?>" required><br>
+        <label for="username">Username/NIS:</label>
+        <input type="text" name="username" id="username" value="<?= old('username') ?>" required placeholder="Masukkan username atau NIS"><br>
 
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br>
+        <input type="password" name="password" id="password" required placeholder="Masukkan password"><br>
 
         <button type="submit">Login</button>
     </form>
-    
+
+    <?php if (session()->getFlashdata('success')): ?>
+        <div style="color: green;">
+            <?= session()->getFlashdata('success') ?>
+        </div>
+    <?php endif; ?>
 </body>
 </html>
-<?php if (session()->getFlashdata('success')): ?>
-    <div style="color: green;">
-        <?= session()->getFlashdata('success') ?>
-    </div>
-<?php endif; ?>

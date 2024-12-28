@@ -12,8 +12,6 @@ $routes->get('/login', 'AuthController::login'); // Halaman login
 $routes->post('/login', 'AuthController::loginProcess'); // Proses login
 $routes->get('/logout', 'AuthController::logout'); // Logout
 
-// Halaman dashboard (dengan middleware autentikasi)
-$routes->get('/dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
 // Grup untuk Admin
 $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
@@ -52,18 +50,28 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
     $routes->post('edit-ekskul/(:num)', 'AdminController::editEkskul/$1');  // Edit ekstrakurikuler
     $routes->get('delete-ekskul/(:num)', 'AdminController::deleteEkskul/$1');// Hapus ekstrakurikuler
 
+    // Pelaporan Preatasi
+    $routes->get('pelaporan_prestasi','AdminController::laporanPrestasi');
+    
+
 
 });
 
-// Grup untuk Kesiswaan
-$routes->group('kesiswaan', ['filter' => 'access_level:2'], function ($routes) {
-    $routes->get('dashboard', 'KesiswaanController::dashboard');
+// Grup untuk Wakasek
+$routes->group('wakasek', ['filter' => 'access_level:2'], function ($routes) {
+    $routes->get('dashboard', 'WakasekController::dashboard');
+    // Tambahkan rute lainnya
 });
 
-// Grup untuk Wali Kelas
-$routes->group('wali-kelas', ['filter' => 'access_level:3'], function ($routes) {
-    $routes->get('dashboard', 'WaliKelasController::dashboard');
+// Grup untuk Walikelas
+$routes->group('walikelas', ['filter' => 'access_level:3'], function ($routes) {
+    $routes->get('dashboard', 'WalikelasController::dashboard');
+    // Tambahkan rute lainnya
 });
+
+
+// untuk siswa
+$routes->get('/siswa/dashboard', 'SiswaController::dashboard');
 
 // RESTful Resources untuk API
 $routes->resource('siswa', ['controller' => 'SiswaController']);

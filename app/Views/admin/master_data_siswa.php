@@ -68,7 +68,7 @@
                         <a class="nav-link" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pelaporan Prestasi</a>
+                        <a class="nav-link" href="<?= base_url('admin/pelaporan_prestasi'); ?>">Pelaporan Prestasi</a>
                     </li>
                     <li>
                         <hr>
@@ -90,8 +90,8 @@
     <thead class="table-dark">
         <tr>
             <th>No</th>
-            <th>Nama Siswa</th>
             <th>NIS</th>
+            <th>Nama Siswa</th>
             <th>Kelas</th>
             <th>Jenis Kelamin</th>
             <th>Alamat</th>
@@ -103,8 +103,8 @@
         <?php foreach ($students as $index => $student): ?>
             <tr>
                 <td><?= $index + 1; ?></td>
-                <td><?= $student['nama_siswa']; ?></td>
                 <td><?= $student['nis_siswa']; ?></td>
+                <td><?= $student['nama_siswa']; ?></td>                
                 <td><?= $student['id_kelas']; ?></td>
                 <td><?= $student['jenis_kelamin']; ?></td>
                 <td><?= $student['alamat_siswa']; ?></td>

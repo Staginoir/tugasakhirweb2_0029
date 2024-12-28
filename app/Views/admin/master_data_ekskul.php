@@ -60,7 +60,7 @@
                         <a class="nav-link active" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pelaporan Prestasi</a>
+                        <a class="nav-link" href="<?= base_url('admin/pelaporan_prestasi'); ?>">Pelaporan Prestasi</a>
                     </li>
                     <li><hr></li>
                     <li>

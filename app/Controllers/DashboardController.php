@@ -27,7 +27,7 @@ class DashboardController extends BaseController
             'totalSiswa' => $totalSiswa, // Total siswa
             'totalPrestasi' => $totalPrestasi, // Total prestasi
         ];
-dd($data);
+
         return view('admin/dashboard', $data);
     }
 }

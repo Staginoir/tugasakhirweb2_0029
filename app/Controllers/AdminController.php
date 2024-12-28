@@ -7,6 +7,7 @@ use App\Models\DashboardModel;
 use App\Models\MSiswaModel;
 use App\Models\GuruModel;
 use App\Models\EkskulModel;
+use App\Models\PrestasiModel;
 
 class AdminController extends BaseController
 {
@@ -16,6 +17,7 @@ class AdminController extends BaseController
     protected $guruModel;
     protected $kelasModel;
     protected $ekskulModel;
+    protected $prestasiModel;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class AdminController extends BaseController
         $this->guruModel = new GuruModel();
         $this->kelasModel = new KelasModel();
         $this->ekskulModel = new EkskulModel();
+        $this->prestasiModel = new PrestasiModel();
     }
 
     // Dashboard Admin
@@ -51,7 +54,7 @@ class AdminController extends BaseController
     public function addUser()
     {
         $data = $this->request->getPost([
-            'username', 'role', 'access_level', 'nis_siswa', 'id_guru', 'status'
+            'id_user','username', 'role', 'access_level', 'nis_siswa', 'id_guru', 'status'
         ]);
         $data['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
 
@@ -229,4 +232,13 @@ class AdminController extends BaseController
 
         return redirect()->to('/admin/master_data_ekskul')->with('success', 'Data ekstrakurikuler berhasil dihapus.');
     }
+
+    //Pelaporan Prestasi
+    public function laporanPrestasi()
+{
+    $prestasiModel = new PrestasiModel();
+    $data['prestasiList'] = $prestasiModel->findAll();
+    return view('admin/pelaporan_prestasi', $data);
+}
+
 }

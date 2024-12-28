@@ -60,7 +60,7 @@
                         <a class="nav-link" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pelaporan Prestasi</a>
+                        <a class="nav-link" href="<?= base_url('admin/pelaporan_prestasi'); ?>">Pelaporan Prestasi</a>
                     </li>
                     <li><hr></li>
                     <li>
@@ -76,6 +76,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
+                            <th>Id Guru</th>
                             <th>Nama</th>
                             <th>NIP</th>
                             <th>Kontak</th>
@@ -87,6 +88,7 @@
                         <?php foreach ($teachers as $index => $teacher): ?>
                         <tr>
                             <td><?= $index + 1; ?></td>
+                            <td><?= $teacher['id_guru']; ?></td>
                             <td><?= $teacher['nama_guru']; ?></td>
                             <td><?= $teacher['nip_guru']; ?></td>
                             <td><?= $teacher['kontak_guru']; ?></td>
@@ -147,6 +149,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                    <div class="mb-3">
+                            <label class="form-label">Id Guru</label>
+                            <input type="text" class="form-control" name="id_guru" required>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" name="nama_guru" required>

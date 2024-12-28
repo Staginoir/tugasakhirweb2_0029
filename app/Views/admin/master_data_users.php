@@ -63,7 +63,7 @@
                         <a class="nav-link" href="<?= base_url('admin/master_data_ekskul'); ?>">Master Data Ekstrakurikuler</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pelaporan Prestasi</a>
+                        <a class="nav-link" href="<?= base_url('admin/pelaporan_prestasi'); ?>">Pelaporan Prestasi</a>
                     </li>
                     <li>
                         <hr>
@@ -86,6 +86,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
+                            <th>Id User</th>
                             <th>Username</th>
                             <th>Role</th>
                             <th>Access Level</th>
@@ -97,6 +98,7 @@
                         <?php foreach ($users as $index => $user): ?>
                             <tr>
                                 <td><?= $index + 1; ?></td>
+                                <td><?=$user['id_user'];?></td>
                                 <td><?= $user['username']; ?></td>
                                 <td><?= $user['role']; ?></td>
                                 <td><?= $user['access_level']; ?></td>
@@ -172,6 +174,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                    <div class="mb-3">
+                            <label for="id_user" class="form-label">Id User</label>
+                            <input type="text" class="form-control" name="id_user" required>
+                        </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" name="username" required>
