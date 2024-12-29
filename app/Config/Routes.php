@@ -7,7 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Autentikasi dan Dasbor
-$routes->get('/', 'AuthController::login');
+$routes->get('/', 'Home::index');
+// $routes->get('/', 'AuthController::login');
 $routes->get('/login', 'AuthController::login'); // Halaman login
 $routes->post('/login', 'AuthController::loginProcess'); // Proses login
 $routes->get('/logout', 'AuthController::logout'); // Logout
