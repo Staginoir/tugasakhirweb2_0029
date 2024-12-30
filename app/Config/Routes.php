@@ -59,16 +59,14 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
 });
 
 // Grup untuk Wakasek
-$routes->group('wakasek', ['filter' => 'access_level:2'], function ($routes) {
-    $routes->get('dashboard', 'WakasekController::dashboard');
-    // Tambahkan rute lainnya
-});
 
 // Grup untuk Walikelas
-$routes->group('walikelas', ['filter' => 'access_level:3'], function ($routes) {
-    $routes->get('dashboard', 'WalikelasController::dashboard');
-    // Tambahkan rute lainnya
+$routes->group('approval', function ($routes) {
+    $routes->get('/', 'ApprovalController::index'); // Mengarah ke /approval
+    $routes->get('approve/(:any)', 'ApprovalController::approve/$1'); // Persetujuan
+    $routes->get('reject/(:any)', 'ApprovalController::reject/$1');   // Penolakan
 });
+
 
 
 // untuk siswa

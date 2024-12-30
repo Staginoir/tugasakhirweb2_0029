@@ -55,10 +55,10 @@ class AuthController extends BaseController
         // Redirect berdasarkan access_level
     if ($user['access_level'] == 1) { // Admin atau Kesiswaan
         return redirect()->to('/admin/dashboard');
-    } elseif ($user['access_level'] == 2) { // Guru
-        return redirect()->to('/guru/dashboard');
-    } elseif ($user['access_level'] == 4) { // Siswa
-        return redirect()->to('/siswa/dashboard');
+    } elseif ($user['access_level'] == 2) { // Wakasek
+        return redirect()->to('/approval');
+    } elseif ($user['access_level'] == 3) { // Wali Kelas
+        return redirect()->to('/approval');
     } elseif ($user['access_level'] == 5) { // Tambahkan peran lain jika ada
         return redirect()->to('/some_other_dashboard');
     }
