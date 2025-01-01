@@ -56,11 +56,9 @@ class AuthController extends BaseController
     if ($user['access_level'] == 1) { // Admin atau Kesiswaan
         return redirect()->to('/admin/dashboard');
     } elseif ($user['access_level'] == 2) { // Wakasek
-        return redirect()->to('/approval');
+        return redirect()->to('/wakasek/dashboard');
     } elseif ($user['access_level'] == 3) { // Wali Kelas
-        return redirect()->to('/approval');
-    } elseif ($user['access_level'] == 5) { // Tambahkan peran lain jika ada
-        return redirect()->to('/some_other_dashboard');
+        return redirect()->to('/walikelas/dashboard');
     }
 
     // Jika access_level tidak dikenal

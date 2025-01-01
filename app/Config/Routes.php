@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ApprovalController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -58,13 +59,21 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
 
 });
 
-// Grup untuk Wakasek
+// Routes untuk Wakasek
+$routes->group('wakasek', ['filter' => 'auth'], function ($routes) {
+    $routes->get('dashboard', 'ApprovalController::wakasekDashboard');
+    $routes->get('approve/(:num)', 'ApprovalController::approve/$1');
+    $routes->get('reject/(:num)', 'ApprovalController::reject/$1');
+    $routes->get('persetujuan_prestasi', 'ApprovalController::persetujuanPrestasi');
 
-// Grup untuk Walikelas
-$routes->group('approval', function ($routes) {
-    $routes->get('/', 'ApprovalController::index'); // Mengarah ke /approval
-    $routes->get('approve/(:any)', 'ApprovalController::approve/$1'); // Persetujuan
-    $routes->get('reject/(:any)', 'ApprovalController::reject/$1');   // Penolakan
+});
+
+// Routes untuk Wali Kelas
+$routes->group('walikelas', ['filter' => 'auth'], function ($routes) {
+    $routes->get('dashboard', 'ApprovalController::waliKelasDashboard');
+    $routes->get('approve/(:num)', 'ApprovalController::approve/$1');
+    $routes->get('reject/(:num)', 'ApprovalController::reject/$1');
+    $routes->get('persetujuan_prestasi','ApprovalController::persetujuan_prestasi');
 });
 
 
