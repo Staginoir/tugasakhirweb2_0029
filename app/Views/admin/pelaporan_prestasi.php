@@ -122,50 +122,67 @@
                     <!-- Tabel Data Prestasi -->
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered table-striped">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Kelas</th>
-                                    <th>Jenis Prestasi</th>
-                                    <th>Ekstrakurikuler</th>
-                                    <th>Nama Kegiatan</th>
-                                    <th>Tingkat</th>
-                                    <th>Gelar</th>
-                                    <th>Waktu Pelaksanaan</th>
-                                    <th>Persetujuan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($prestasiList)): ?>
-                                    <?php foreach ($prestasiList as $index => $prestasi): ?>
-                                        <tr>
-                                            <td class="text-center"><?= $index + 1; ?></td>
-                                            <td><?= $prestasi['nama_siswa']; ?></td>
-                                            <td><?= $prestasi['kelas']; ?></td>
-                                            <td><?= $prestasi['jenis_prestasi']; ?></td>
-                                            <td><?= $prestasi['ekstrakurikuler']; ?></td>
-                                            <td><?= $prestasi['nama_kegiatan']; ?></td>
-                                            <td><?= $prestasi['tingkat']; ?></td>
-                                            <td><?= $prestasi['gelar']; ?></td>
-                                            <td><?= $prestasi['waktu_pelaksanaan']; ?></td>
-                                            <td class="text-center">
-                                                <?php if ($prestasi['persetujuan'] === 'Diterima'): ?>
-                                                    <span class="status-diterima">Diterima</span>
-                                                <?php elseif ($prestasi['persetujuan'] === 'Ditolak'): ?>
-                                                    <span class="status-ditolak">Ditolak</span>
-                                                <?php else: ?>
-                                                    <span class="status-menunggu">Menunggu</span>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="10" class="text-center">Tidak ada data prestasi tersedia.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
+                        <thead class="table-light">
+    <tr>
+        <th>No</th>
+        <th>Nama Siswa</th>
+        <th>Kelas</th>
+        <th>Jenis Prestasi</th>
+        <th>Ekstrakurikuler</th>
+        <th>Nama Kegiatan</th>
+        <th>Tingkat</th>
+        <th>Gelar</th>
+        <th>Waktu Pelaksanaan</th>
+        <th>Persetujuan Wali Kelas</th>
+        <th>Persetujuan Wakasek</th>
+    </tr>
+</thead>
+<tbody>
+    <?php if (!empty($prestasiList)): ?>
+        <?php foreach ($prestasiList as $index => $prestasi): ?>
+            <tr>
+                <td class="text-center"><?= $index + 1; ?></td>
+                <td><?= $prestasi['nama_siswa']; ?></td>
+                <td><?= $prestasi['kelas']; ?></td>
+                <td><?= $prestasi['jenis_prestasi']; ?></td>
+                <td><?= $prestasi['ekstrakurikuler']; ?></td>
+                <td><?= $prestasi['nama_kegiatan']; ?></td>
+                <td><?= $prestasi['tingkat']; ?></td>
+                <td><?= $prestasi['gelar']; ?></td>
+                <td><?= $prestasi['waktu_pelaksanaan']; ?></td>
+                <td class="text-center">
+                    <?php 
+                        $walkelas = $prestasi['persetujuan_walkelas'] ?? 'Menunggu';
+                        if ($walkelas === 'Diterima') {
+                            echo '<span class="status-diterima">Diterima</span>';
+                        } elseif ($walkelas === 'Ditolak') {
+                            echo '<span class="status-ditolak">Ditolak</span>';
+                        } else {
+                            echo '<span class="status-menunggu">Menunggu</span>';
+                        }
+                    ?>
+                </td>
+                <td class="text-center">
+                    <?php 
+                        $wakasek = $prestasi['persetujuan_wakasek'] ?? 'Menunggu';
+                        if ($wakasek === 'Diterima') {
+                            echo '<span class="status-diterima">Diterima</span>';
+                        } elseif ($wakasek === 'Ditolak') {
+                            echo '<span class="status-ditolak">Ditolak</span>';
+                        } else {
+                            echo '<span class="status-menunggu">Menunggu</span>';
+                        }
+                    ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="11" class="text-center">Tidak ada data prestasi tersedia.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
                         </table>
                     </div>
                 </div>

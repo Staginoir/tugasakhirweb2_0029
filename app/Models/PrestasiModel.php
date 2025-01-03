@@ -53,4 +53,17 @@ class PrestasiModel extends Model
         'bukti_kegiatan' => 'permit_empty|max_length[50]',
         'nis_siswa' => 'permit_empty|max_length[5]',
     ];
+    public function getPrestasiWithSiswa()
+{
+    return $this->select('M_Prestasi.*, M_Siswa.nama_siswa, M_Siswa.id_kelas AS kelas, m_ekskul.nama_ekskul AS ekstrakurikuler, m_tingkat.nama_tingkat AS tingkat, m_gelar.nama_gelar AS gelar')
+                ->join('M_Siswa', 'M_Siswa.nis_siswa = M_Prestasi.nis_siswa', 'left')
+                ->join('m_ekskul', 'm_ekskul.id_ekskul = M_Prestasi.id_ekskul', 'left')
+                ->join('m_tingkat', 'm_tingkat.id_tingkat = M_Prestasi.id_tingkat', 'left')
+                ->join('m_gelar', 'm_gelar.id_gelar = M_Prestasi.id_gelar', 'left')
+                ->findAll();
 }
+
+
+
+}
+

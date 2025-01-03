@@ -76,7 +76,10 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
+                            <th>Id Ekskul</th>
                             <th>Nama Ekstrakurikuler</th>
+                            <th>Jumlah Siswa</th>
+                            <TH>Guru Pembimbing</TH>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -85,7 +88,10 @@
                             <?php foreach ($ekskul as $index => $item): ?>
                                 <tr>
                                     <td><?= $index + 1; ?></td>
+                                    <td><?= esc($item['id_ekskul']); ?></td>
                                     <td><?= esc($item['nama_ekskul']); ?></td>
+                                    <td><?= esc($item['jumlah_siswa']); ?></td>
+                                    <td><?= esc($item['guru_pembimbing']); ?></td>
                                     <td>
                                         <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editEkskulModal-<?= $item['id_ekskul']; ?>">Edit</button>
                                         <a href="<?= base_url('admin/delete-ekskul/' . $item['id_ekskul']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>

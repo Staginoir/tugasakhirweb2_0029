@@ -200,7 +200,7 @@ class AdminController extends BaseController
     {
         $data = [
             'title' => 'Master Data Ekstrakurikuler',
-            'ekskul' => $this->ekskulModel->findAll(),
+            'ekskul' => $this->ekskulModel->getEkskulWithGuru(), // Mengambil data dengan join
         ];
         return view('admin/master_data_ekskul', $data);
     }
@@ -208,11 +208,17 @@ class AdminController extends BaseController
     // Menambah data ekstrakurikuler
     public function addEkskul()
     {
+        if (!$this->validate(['nama_ekskul' => 'required|max_length[100]'])) {
+            return redirect()->to('/admin/master_data_ekskul')
+                ->with('error', $this->validator->getErrors());
+        }
+    
         $this->ekskulModel->insert([
             'nama_ekskul' => $this->request->getPost('nama_ekskul'),
         ]);
-
-        return redirect()->to('/admin/master_data_ekskul')->with('success', 'Data ekstrakurikuler berhasil ditambahkan.');
+    
+        return redirect()->to('/admin/master_data_ekskul')
+            ->with('success', 'Data ekstrakurikuler berhasil ditambahkan.');
     }
 
     // Mengupdate data ekstrakurikuler
@@ -236,8 +242,11 @@ class AdminController extends BaseController
     //Pelaporan Prestasi
     public function laporanPrestasi()
 {
-    $prestasiModel = new PrestasiModel();
-    $data['prestasiList'] = $prestasiModel->findAll();
+    $data = [
+        'title' => 'Laporan Prestasi',
+        'prestasiList' => $this->prestasiModel->getPrestasiWithSiswa()
+    ];
+
     return view('admin/pelaporan_prestasi', $data);
 }
 
