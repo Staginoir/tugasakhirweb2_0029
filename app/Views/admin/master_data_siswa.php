@@ -100,24 +100,25 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($students as $index => $student): ?>
+        <?php foreach ($siswa as $index => $siswa): ?>
             <tr>
                 <td><?= $index + 1; ?></td>
-                <td><?= $student['nis_siswa']; ?></td>
-                <td><?= $student['nama_siswa']; ?></td>                
-                <td><?= $student['id_kelas']; ?></td>
-                <td><?= $student['jenis_kelamin']; ?></td>
-                <td><?= $student['alamat_siswa']; ?></td>
-                <td><?= $student['kontak_siswa']; ?></td>
+                <td><?= $siswa['nis_siswa']; ?></td>
+                <td><?= $siswa['nama_siswa']; ?></td>                
+                <td><?= $siswa['id_kelas']; ?></td>
+                <td><?= $siswa['jenis_kelamin']; ?></td>
+                <td><?= $siswa['alamat_siswa']; ?></td>
+                <td><?= $siswa['kontak_siswa']; ?></td>
                 <td>
-                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editStudentModal-<?= $student['nis_siswa']; ?>">Edit</button>
-                    <a href="<?= base_url('admin/delete-student/' . $student['nis_siswa']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus siswa ini?')">Hapus</a>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editStudentModal-<?= $siswa['nis_siswa']; ?>">Edit</button>
+                    <a href="<?= base_url('admin/delete-student/' . $siswa['nis_siswa']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus siswa ini?')">Hapus</a>
                 </td>
             </tr>
             <!-- Modal Edit Siswa -->
-            <div class="modal fade" id="editStudentModal-<?= $student['nis_siswa']; ?>" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="editStudentModal-<?= $siswa['nis_siswa']; ?>" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form action="<?= base_url('admin/edit-student/' . $student['nis_siswa']); ?>" method="post">
+                    <form action="<?= base_url('admin/edit-student/' . $siswa['nis_siswa']); ?>" method="post">
+                    <?= csrf_field() ?>
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Edit Siswa</h5>
@@ -126,34 +127,34 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="nama_siswa" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" name="nama_siswa" value="<?= $student['nama_siswa']; ?>" required>
+                                    <input type="text" class="form-control" name="nama_siswa" value="<?= $siswa['nama_siswa']; ?>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="nis_siswa" class="form-label">NIS</label>
-                                    <input type="text" class="form-control" name="nis_siswa" value="<?= $student['nis_siswa']; ?>" required>
+                                    <input type="text" class="form-control" name="nis_siswa" value="<?= $siswa['nis_siswa']; ?>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="id_kelas" class="form-label">Kelas</label>
-                                    <input type="text" class="form-control" name="id_kelas" value="<?= $student['id_kelas']; ?>" required>
+                                    <input type="text" class="form-control" name="id_kelas" value="<?= $siswa['id_kelas']; ?>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
                                     <select name="jenis_kelamin" class="form-select">
-                                        <option value="Laki-laki" <?= $student['jenis_kelamin'] == 'Laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
-                                        <option value="Perempuan" <?= $student['jenis_kelamin'] == 'Perempuan' ? 'selected' : ''; ?>>Perempuan</option>
+                                        <option value="Laki-laki" <?= $siswa['jenis_kelamin'] == 'Laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
+                                        <option value="Perempuan" <?= $siswa['jenis_kelamin'] == 'Perempuan' ? 'selected' : ''; ?>>Perempuan</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="alamat_siswa" class="form-label">Alamat</label>
-                                    <textarea class="form-control" name="alamat_siswa" rows="3" required><?= $student['alamat_siswa']; ?></textarea>
+                                    <textarea class="form-control" name="alamat_siswa" rows="3" required><?= $siswa['alamat_siswa']; ?></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="kontak_siswa" class="form-label">Kontak</label>
-                                    <input type="text" class="form-control" name="kontak_siswa" value="<?= $student['kontak_siswa']; ?>" required>
+                                    <input type="text" class="form-control" name="kontak_siswa" value="<?= $siswa['kontak_siswa']; ?>" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="passw_siswa" class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="passw_siswa" value="<?= $student['passw_siswa']; ?>">
+                                    <input type="password" class="form-control" name="passw_siswa" value="<?= $siswa['passw_siswa']; ?>">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -188,8 +189,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="id_kelas" class="form-label">Kelas</label>
-                        <input type="text" class="form-control" name="id_kelas" required>
+                        <select name="id_kelas" class="form-select" required>
+                            <option value="">-- Pilih Kelas --</option>
+                            <?php if (!empty($kelas)): ?>
+                                <?php foreach ($kelas as $k): ?>
+                                    <option value="<?= $k['id_kelas']; ?>"><?= $k['nama_kelas']; ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
                         <select name="jenis_kelamin" class="form-select" required>

@@ -1,68 +1,76 @@
 <?php
+
 namespace App\Controllers;
 
-use CodeIgniter\RESTful\ResourceController;
-
-class SiswaController extends ResourceController
+use App\Models\PrestasiModel;
+class SiswaController extends BaseController
 {
-    protected $modelName = 'App\\Models\\MSiswaModel';
-    protected $format    = 'json';
-
-    public function index()
+    protected $prestasiModel;
+    
+    public function dashboard()
     {
-        $data = $this->model->findAll();
-        return $this->respond($data);
+        $session = session();
+
+        // Kirim data siswa yang login ke view
+        return view('siswa/dashboard', [
+            'nama_siswa' => $session->get('nama_siswa'), // Ambil nama siswa dari session
+        ]);
     }
 
-    public function show($id = null)
+    public function data_prestasi()
     {
-        $data = $this->model->find($id);
-        if (!$data) {
-            return $this->failNotFound('Siswa tidak ditemukan');
-        }
-        return $this->respond($data);
+        $session = session();
+        $nis = $session->get('nis_siswa'); // Ambil NIS siswa dari session
+
+        $prestasiModel = new \App\Models\PrestasiModel();
+        $data['prestasi'] = $prestasiModel->getPrestasiByNis($nis); // Gunakan metode yang sesuai
+
+        // Kirim nama siswa ke view
+        $data['nama_siswa'] = $session->get('nama_siswa');
+
+        return view('siswa/data_prestasi', $data);
     }
 
-    public function create()
+    public function show($id)
     {
-        $data = $this->request->getPost();
+        // Misalnya: Fetch data siswa berdasarkan NIS
+        $prestasiModel = new \App\Models\PrestasiModel();
+        $prestasi = $prestasiModel->find($id);
 
-        if (!$this->model->insert($data)) {
-            return $this->fail($this->model->errors());
+        if (!$prestasi) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("Data tidak ditemukan: $id");
         }
 
-        $createdData = $this->model->find($this->model->insertID());
-        return $this->respondCreated($createdData, 'Siswa berhasil dibuat');
+        return $this->response->setJSON($prestasi);
     }
 
-    public function update($id = null)
+    public function input_prestasi()
     {
-        $data = $this->request->getRawInput();
+        $session = session();
+        return view('siswa/input_prestasi', [
+            'nama_siswa' => $session->get('nama_siswa') // Mengirimkan nama siswa ke view
+        ]);
+    }
+    
+    public function addPrestasi()
+    {
+        $prestasiModel = new PrestasiModel();
 
-        // Pastikan siswa dengan ID tersebut ada
-        if (!$this->model->find($id)) {
-            return $this->failNotFound('Siswa tidak ditemukan');
+        $data = [
+            'jenis_prestasi' => $this->request->getPost('jenis_prestasi'),
+            'nama_kegiatan' => $this->request->getPost('nama_kegiatan'),
+            'tingkat' => $this->request->getPost('tingkat'),
+            'gelar' => $this->request->getPost('gelar'),
+            'waktu_pelaksanaan' => $this->request->getPost('waktu_pelaksanaan'),
+            'nis_siswa' => session()->get('nis_siswa') // Mengambil NIS dari session
+        ];
+
+        // Simpan ke database
+        if ($prestasiModel->insert($data)) {
+            return redirect()->to(base_url('siswa/data_prestasi'))->with('success', 'Data prestasi berhasil ditambahkan.');
+        } else {
+            return redirect()->to(base_url('siswa/data_prestasi'))->with('error', 'Gagal menambahkan data prestasi.');
         }
-
-        if (!$this->model->update($id, $data)) {
-            return $this->fail($this->model->errors());
-        }
-
-        $updatedData = $this->model->find($id);
-        return $this->respondUpdated($updatedData, 'Siswa berhasil diperbarui');
     }
 
-    public function delete($id = null)
-    {
-        // Pastikan siswa dengan ID tersebut ada
-        if (!$this->model->find($id)) {
-            return $this->failNotFound('Siswa tidak ditemukan');
-        }
-
-        if (!$this->model->delete($id)) {
-            return $this->fail('Gagal menghapus Siswa');
-        }
-
-        return $this->respondDeleted(['nis_siswa' => $id], 'Siswa berhasil dihapus');
-    }
 }

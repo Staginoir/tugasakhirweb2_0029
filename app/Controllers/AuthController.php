@@ -3,73 +3,94 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\MSiswaModel;
 
 class AuthController extends BaseController
 {
+    // Form login untuk admin
     public function login()
     {
-        return view('auth/login'); // Menampilkan halaman login
+        return view('auth/login'); // Menampilkan form login admin
     }
 
+    // Proses login admin
     public function loginProcess()
-{
-    $session = session();
-    $userModel = new UserModel();
+    {
+        $request = service('request');
 
-    // Validasi input
-    $rules = [
-        'username' => 'required|min_length[3]|max_length[20]',
-        'password' => 'required|min_length[5]',
-    ];
+        $username = $request->getPost('username');
+        $password = $request->getPost('password');
 
-    if (!$this->validate($rules)) {
-        return redirect()->to('/login')
-                         ->withInput()
-                         ->with('errors', $this->validator->getErrors());
+        $usersModel = new UserModel();
+
+        // Cari pengguna berdasarkan username
+        $user = $usersModel->where('username', $username)->first();
+
+        if ($user) {
+            // Verifikasi password
+            if (password_verify($password, $user['password'])) {
+                // Set session
+                session()->set([
+                    'id_user'     => $user['id_user'],
+                    'username'    => $user['username'],
+                    'access_level'=> $user['access_level'],
+                    'logged_in'   => true,
+                ]);
+
+                // Redirect berdasarkan access_level
+                if ($user['access_level'] == 1) {
+                    return redirect()->to('/admin/dashboard'); // Halaman admin
+                } else {
+                    return redirect()->to('/other/dashboard'); // Halaman role lain
+                }
+            } else {
+                return redirect()->back()->with('error', 'Password salah.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Username tidak ditemukan.');
+        }
     }
 
-    // Cari user di database
-    $username = $this->request->getPost('username');
-    $password = $this->request->getPost('password');
-    $user = $userModel->where('username', $username)->first();
-
-    if (!$user) {
-        return redirect()->to('/login')->with('error', 'Username tidak ditemukan.');
+    // Form login untuk siswa
+    public function loginSiswa()
+    {
+        return view('auth/login_siswa'); // Menampilkan form login siswa
     }
 
-    // Verifikasi password
-    if (!password_verify($password, $user['password'])) {
-        return redirect()->to('/login')->with('error', 'Password salah.');
-    }
-
-    // Set session
-    $session->set([
-        'id_user'      => $user['id_user'],
-        'username'     => $user['username'],
-        'role'         => $user['role'],
-        'access_level' => $user['access_level'], // Tambahkan akses level ke session
-        'logged_in'    => true,
-    ]);
+    // Proses login siswa
+    public function processLoginSiswa()
+    {
+        $username = $this->request->getPost('nis_siswa');
+        $password = $this->request->getPost('password');
     
-
-        // Redirect berdasarkan access_level
-    if ($user['access_level'] == 1) { // Admin atau Kesiswaan
-        return redirect()->to('/admin/dashboard');
-    } elseif ($user['access_level'] == 2) { // Wakasek
-        return redirect()->to('/wakasek/dashboard');
-    } elseif ($user['access_level'] == 3) { // Wali Kelas
-        return redirect()->to('/walikelas/dashboard');
+        $model = new MSiswaModel();
+        $siswa = $model->where('nis_siswa', $username)->first();
+    
+        if (!$siswa) {
+            return redirect()->back()->with('error', 'NIS tidak ditemukan.');
+        }
+    
+        // Verifikasi password
+        if (!password_verify($password, $siswa['passw_siswa'])) {
+            return redirect()->back()->with('error', 'Password salah.');
+        }
+        
+        
+        // Jika valid, set session dan redirect
+        session()->set([
+            'nis_siswa'  => $siswa['nis_siswa'],
+            'nama_siswa' => $siswa['nama_siswa'],
+            'logged_in'  => true,
+        ]);
+        return redirect()->to('/siswa/dashboard');
     }
-
-    // Jika access_level tidak dikenal
-    return redirect()->to('/login')->with('error', 'Access level tidak valid.');
-
-}
+        
 
 
+    // Logout untuk admin atau siswa
     public function logout()
     {
         session()->destroy();
-        return redirect()->to('/login')->with('success', 'Anda telah logout.');
+        return redirect()->to('/login'); // Kembali ke halaman login
     }
 }

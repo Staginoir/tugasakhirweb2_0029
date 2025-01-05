@@ -82,44 +82,65 @@ class AdminController extends BaseController
         return redirect()->to('admin/master_data_users')->with('success', 'User berhasil dihapus.');
     }
 
-    // Master Data Siswa
     public function masterDataSiswa()
     {
-        $data['students'] = $this->siswaModel->findAll();
+        $model = new \App\Models\MSiswaModel();
+        $data['siswa'] = $model->getSiswaWithKelas();
+
         return view('admin/master_data_siswa', $data);
     }
 
-    public function addSiswa()
+    
+    public function addStudent()
     {
-        $data = $this->request->getPost([
-            'nis_siswa', 'nama_siswa', 'id_kelas', 'jenis_kelamin', 'alamat_siswa', 'kontak_siswa'
-        ]);
-        $data['passw_siswa'] = password_hash($this->request->getPost('passw_siswa'), PASSWORD_DEFAULT);
+        if ($this->request->getMethod() === 'post') {
+            // Ambil data dari form
+            $data = $this->request->getPost([
+                'nis_siswa',
+                'nama_siswa',
+                'id_kelas',
+                'jenis_kelamin',
+                'alamat_siswa',
+                'kontak_siswa',
+                'passw_siswa',
+            ]);
 
-        $this->siswaModel->insert($data);
-        return redirect()->to('admin/master_data_siswa')->with('success', 'Siswa berhasil ditambahkan.');
-    }
+            // Simpan data ke database
+            if (!$this->siswaModel->insert($data)) {
+                return redirect()->back()->withInput()->with('errors', $this->siswaModel->errors());
+            }
 
-    public function editSiswa($nis_siswa)
-    {
-        $data = $this->request->getPost([
-            'nama_siswa', 'id_kelas', 'jenis_kelamin', 'alamat_siswa', 'kontak_siswa'
-        ]);
-
-        if ($this->request->getPost('passw_siswa')) {
-            $data['passw_siswa'] = password_hash($this->request->getPost('passw_siswa'), PASSWORD_DEFAULT);
+            return redirect()->to(base_url('admin/master_data_siswa'))->with('message', 'Siswa berhasil ditambahkan.');
         }
 
-        $this->siswaModel->update($nis_siswa, $data);
-        return redirect()->to('admin/master_data_siswa')->with('success', 'Siswa berhasil diubah.');
+        // Ambil data kelas menggunakan model
+        $data['kelas'] = $this->kelasModel->findAll();
+
+        // Kirim data kelas ke view
+        return view('admin/master_data_siswa', $data);
     }
 
-    public function deleteSiswa($nis_siswa)
+    public function editStudent($nis)
     {
-        $this->siswaModel->delete($nis_siswa);
-        return redirect()->to('admin/master_data_siswa')->with('success', 'Siswa berhasil dihapus.');
+        $data = $this->request->getPost([
+            'nama_siswa',
+            'id_kelas',
+            'jenis_kelamin',
+            'alamat_siswa',
+            'kontak_siswa',
+            'passw_siswa',
+        ]);
+
+        $this->siswaModel->update($nis, $data);
+        return redirect()->to(base_url('admin/master_data_siswa'))->with('message', 'Data siswa berhasil diperbarui.');
     }
 
+    public function deleteStudent($nis)
+    {
+        $this->siswaModel->delete($nis);
+        return redirect()->to(base_url('admin/master_data_siswa'))->with('message', 'Data siswa berhasil dihapus.');
+    }
+    
     // Master Data Guru
     public function masterDataGuru()
     {
@@ -241,13 +262,14 @@ class AdminController extends BaseController
 
     //Pelaporan Prestasi
     public function laporanPrestasi()
-{
-    $data = [
-        'title' => 'Laporan Prestasi',
-        'prestasiList' => $this->prestasiModel->getPrestasiWithSiswa()
-    ];
+    {
+        $data = [
+            'title' => 'Laporan Prestasi',
+            'prestasiList' => $this->prestasiModel->getAllPrestasiWithSiswa()
+        ];
 
-    return view('admin/pelaporan_prestasi', $data);
-}
+        return view('admin/pelaporan_prestasi', $data);
+    }
+
 
 }

@@ -10,9 +10,12 @@ use CodeIgniter\Router\RouteCollection;
 // Autentikasi dan Dasbor
 $routes->get('/', 'Home::index');
 // $routes->get('/', 'AuthController::login');
-$routes->get('/login', 'AuthController::login'); // Halaman login
-$routes->post('/login', 'AuthController::loginProcess'); // Proses login
+$routes->get('/login', 'AuthController::login'); // Login page
+$routes->post('/login', 'AuthController::loginProcess'); // Process login
 $routes->get('/logout', 'AuthController::logout'); // Logout
+$routes->get('/login-siswa', 'AuthController::loginSiswa'); // Student login page
+$routes->post('auth/processLoginSiswa', 'AuthController::processLoginSiswa'); // Process student login
+
 
 
 // Grup untuk Admin
@@ -31,7 +34,7 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
     // Master Data Siswa
     $routes->get('master_data_siswa', 'AdminController::masterDataSiswa');// Lihat daftar siswa
     $routes->post('add-siswa', 'AdminController::create');       // Tambah siswa
-    $routes->post('edit-siswa/(:segment)', 'AdminController::update/$1'); // Edit siswa
+    $routes->post('edit-siswa/(:num)', 'AdminController::update/$1'); // Edit siswa
     $routes->get('delete-siswa/(:segment)', 'AdminController::delete/$1'); // Hapus siswa
 
     // Master Data Guru
@@ -79,7 +82,14 @@ $routes->group('walikelas', ['filter' => 'auth'], function ($routes) {
 
 
 // untuk siswa
-$routes->get('/siswa/dashboard', 'SiswaController::dashboard');
+$routes->group('siswa', ['filter' => 'auth'], function ($routes) {
+    $routes->get('dashboard', 'SiswaController::dashboard');
+    $routes->get('data_prestasi', 'SiswaController::data_prestasi');
+    $routes->get('input_prestasi', 'SiswaController::input_prestasi');
+    $routes->post('addPrestasi', 'SiswaController::addPrestasi');
+
+});
+
 
 // RESTful Resources untuk API
 $routes->resource('siswa', ['controller' => 'SiswaController']);

@@ -41,29 +41,27 @@
             background: linear-gradient(120deg, #00a8cc, #63d3ff);
             color: white;
             padding: 50px 20px;
-            text-align: center;
+            text-align: left;
             position: relative;
+            overflow: hidden;
         }
         .hero-section .content {
-            max-width: 600px;
-            margin: auto;
+            max-width: 500px;
         }
         .hero-section h1 {
-            font-size: 36px;
+            font-size: 42px;
             margin: 0;
-        }
-        .hero-section p {
-            font-size: 18px;
-            margin: 10px 0 20px;
+            font-weight: bold;
         }
         .hero-section button {
-            padding: 10px 20px;
+            margin-top: 20px;
+            padding: 12px 25px;
             background-color: orange;
             border: none;
             color: white;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
         }
         .hero-section button:hover {
             background-color: darkorange;
@@ -71,11 +69,11 @@
         .hero-section .image {
             position: absolute;
             top: 50%;
-            right: 10%;
+            right: 5%;
             transform: translateY(-50%);
         }
         .hero-section .image img {
-            max-width: 300px;
+            max-width: 350px;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -86,22 +84,22 @@
         <div class="container">
             <div class="logo">PRESWA</div>
             <nav>
-                <a href="#">Beranda</a>
-                <a href="#">Tentang Kami</a>
-                <a href="#">Panduan</a>
-                <a href="#">FAQ</a>
-                <a href="#">Prestasi</a>
-                <a href="#">AGIL NAUFAL RAMADHAN</a>
+                <a href="<?= base_url('siswa/data_prestasi'); ?>">Beranda</a>
+                <a href="<?= base_url('siswa/tentang_kami'); ?>">Tentang Kami</a>
+                <a href="<?= base_url('siswa/panduan'); ?>">Panduan</a>
+                <a href="<?= base_url('siswa/faq'); ?>">FAQ</a>
+                <a href="<?= base_url('siswa/data_prestasi'); ?>">Prestasi</a>
+                <a href="<?= base_url('siswa/dashboard'); ?>"><?= $nama_siswa; ?></a>
             </nav>
         </div>
     </header>
     <section class="hero-section">
         <div class="content">
-            <h1>SMAFOUR MELESAT</h1>
+            <h1>SMAFOUR <br>MELESAT</h1>
             <button>Masukkan Prestasi</button>
         </div>
         <div class="image">
-            <img src="/path/to/school-image.jpg" alt="School Building">
+            <img src="/dist/img/photo1.png" alt="School Building">
         </div>
     </section>
 </body>

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class MSiswaModel extends Model
 {
-    protected $table = 'M_Siswa'; 
+    protected $table = 'm_siswa'; 
     protected $primaryKey = 'nis_siswa'; 
     protected $allowedFields = [
         'nis_siswa',
@@ -46,4 +46,11 @@ class MSiswaModel extends Model
             'in_list' => 'Jenis Kelamin hanya bisa Laki-laki atau Perempuan.',
         ],
     ];
+    public function getSiswaWithKelas()
+{
+    return $this->select('m_siswa.*, m_kelas.nama_kelas')
+                ->join('m_kelas', 'm_Kelas.id_kelas = m_siswa.id_kelas')
+                ->findAll();
+}
+
 }
