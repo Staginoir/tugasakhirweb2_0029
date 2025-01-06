@@ -87,7 +87,10 @@ $routes->group('siswa', ['filter' => 'auth'], function ($routes) {
     $routes->get('data_prestasi', 'SiswaController::data_prestasi');
     $routes->get('input_prestasi', 'SiswaController::input_prestasi');
     $routes->post('addPrestasi', 'SiswaController::addPrestasi');
-
+    $routes->get('show/(:num)', 'SiswaController::show/$1');
+    $routes->get('edit/(:num)', 'SiswaController::edit/$1'); // Menampilkan form edit
+    $routes->post('edit/(:num)', 'SiswaController::update/$1'); // Memproses update data
+    $routes->get('delete/(:num)', 'SiswaController::delete/$1'); // Menghapus data
 });
 
 
