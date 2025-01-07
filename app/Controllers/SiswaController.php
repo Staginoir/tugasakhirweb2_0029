@@ -53,122 +53,184 @@ class SiswaController extends BaseController
         return view('siswa/input_prestasi', $data);
     }
 
-    
+
 
     // Menambahkan prestasi
     public function addPrestasi()
     {
         $session = session();
-        $data = $this->request->getPost();
 
-        // Tambahkan NIS siswa dari session
-        $data['nis_siswa'] = $session->get('nis_siswa');
-
-        // Validasi data
+        // Validasi data input, termasuk validasi file upload
         if (!$this->validate([
             'jenis_prestasi' => 'required|in_list[Akademik,Non Akademik]',
-            'id_tingkat' => 'required',
-            'id_gelar' => 'required',
-            'id_bidang' => 'required',
+            'id_tingkat' => 'permit_empty',
+            'id_gelar' => 'permit_empty',
+            'id_bidang' => 'permit_empty',
             'nama_pembina' => 'required|max_length[50]',
-            'id_ekskul' => 'required',
+            'id_ekskul' => 'permit_empty',
             'nama_kegiatan' => 'required|max_length[100]',
-            'tempat' => 'required|max_length[100]',
-            'id_kota' => 'required',
-            'id_provinsi' => 'required',
+            'tempat' => 'permit_empty|max_length[100]',
+            'id_kota' => 'permit_empty',
+            'id_provinsi' => 'permit_empty',
+            'penyelenggara' => 'required|max_length[100]',
+            'jumlah_sekolah' => 'permit_empty|max_length[20]',
+            'jumlah_peserta' => 'permit_empty|max_length[20]',
             'waktu_pelaksanaan' => 'required|valid_date',
-            'bukti_sertif' => 'uploaded[bukti_sertif]|max_size[bukti_sertif,2048]|ext_in[bukti_sertif,pdf,jpg,jpeg,png]',
-            'bukti_kegiatan' => 'uploaded[bukti_kegiatan]|max_size[bukti_kegiatan,2048]|ext_in[bukti_kegiatan,pdf,jpg,jpeg,png]',
+            'bukti_sertif' => [
+                'rules' => 'uploaded[bukti_sertif]|max_size[bukti_sertif,2048]|mime_in[bukti_sertif,application/pdf,image/jpeg,image/png]',
+                'errors' => [
+                    'uploaded' => 'Bukti sertifikat wajib diunggah.',
+                    'max_size' => 'Ukuran file maksimal adalah 2MB.',
+                    'mime_in' => 'Hanya file PDF atau gambar yang diizinkan.',
+                ],
+            ],
+            'bukti_kegiatan' => [
+                'rules' => 'uploaded[bukti_kegiatan]|max_size[bukti_kegiatan,2048]|mime_in[bukti_kegiatan,application/pdf,image/jpeg,image/png]',
+                'errors' => [
+                    'uploaded' => 'Bukti kegiatan wajib diunggah.',
+                    'max_size' => 'Ukuran file maksimal adalah 2MB.',
+                    'mime_in' => 'Hanya file PDF atau gambar yang diizinkan.',
+                ],
+            ],
         ])) {
-            return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
+            return redirect()->back()->withInput()->with('error', implode('<br>', $this->validator->getErrors()));
         }
 
-        // Simpan data ke database
+        // Ambil data POST
+        $data = $this->request->getPost();
+
+        // Gabungkan data POST dengan data statik
+        $data = array_merge($data, [
+            'persetujuan_walkelas' => 'Menunggu',
+            'persetujuan_wakasek' => 'Menunggu',
+            'nis_siswa' => $session->get('nis_siswa'),
+        ]);
+
+        // Ambil file dari form
+        $buktiSertif = $this->request->getFile('bukti_sertif');
+        $buktiKegiatan = $this->request->getFile('bukti_kegiatan');
+
+        // Pindahkan file ke folder uploads dan simpan path ke dalam $data
+        if ($buktiSertif->isValid() && !$buktiSertif->hasMoved()) {
+            // Buat nama file acak untuk sertifikat
+            $sertifName = $buktiSertif->getRandomName();
+
+            // Pindahkan file ke folder tujuan
+            $buktiSertif->move('uploads/sertifikat', $sertifName);
+
+            // Simpan path file ke array data
+            $data['bukti_sertif'] = $sertifName; // Path file sertifikat
+        }
+
+        if ($buktiKegiatan->isValid() && !$buktiKegiatan->hasMoved()) {
+            // Buat nama file acak untuk kegiatan
+            $kegiatanName = $buktiKegiatan->getRandomName();
+
+            // Pindahkan file ke folder tujuan
+            $buktiKegiatan->move('uploads/kegiatan', $kegiatanName);
+
+            // Simpan path file ke array data
+            $data['bukti_kegiatan'] = $kegiatanName; // Path file kegiatan
+        }
+        // dd($data);
         if ($this->prestasiModel->save($data)) {
             return redirect()->to(base_url('siswa/data_prestasi'))->with('success', 'Data prestasi berhasil ditambahkan.');
         }
-
+        log_message('error', 'Gagal menyimpan data prestasi ke database: ' . implode(', ', $this->prestasiModel->errors()));
         return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data prestasi.');
     }
+
 
     // Menampilkan detail prestasi
     public function show($id)
     {
         $session = session();
 
-        // Ambil data prestasi berdasarkan ID
-        $prestasi = $this->prestasiModel->find($id);
+        // Ambil data prestasi berdasarkan ID dengan relasi
+        $prestasi = $this->prestasiModel
+                 ->select('M_Prestasi.*, M_Siswa.nama_siswa, m_ekskul.nama_ekskul, m_tingkat.nama_tingkat, m_gelar.nama_gelar, m_kota.nama_kota AS kota, m_provinsi.nama_provinsi AS provinsi')
+                 ->join('M_Siswa', 'M_Siswa.nis_siswa = M_Prestasi.nis_siswa', 'left')
+                 ->join('m_ekskul', 'm_ekskul.id_ekskul = M_Prestasi.id_ekskul', 'left')
+                 ->join('m_tingkat', 'm_tingkat.id_tingkat = M_Prestasi.id_tingkat', 'left')
+                 ->join('m_gelar', 'm_gelar.id_gelar = M_Prestasi.id_gelar', 'left')
+                 ->join('m_kota', 'm_kota.id_kota = M_Prestasi.id_kota', 'left')
+                 ->join('m_provinsi', 'm_provinsi.id_provinsi = M_Prestasi.id_provinsi', 'left')
+                 ->find($id);
+
 
         // Jika data tidak ditemukan, tampilkan error
         if (!$prestasi) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException("Data tidak ditemukan: $id");
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("Data tidak ditemukan.");
         }
+
+        // Ambil daftar semua prestasi dengan relasi
+        $prestasiList = $this->prestasiModel->getAllPrestasiWithSiswa();
 
         // Kirim data ke view
         $data = [
+            'title' => 'Detail Prestasi',
             'prestasi' => $prestasi,
+            'prestasiList' => $prestasiList,
             'nama_siswa' => $session->get('nama_siswa'),
         ];
 
         return view('siswa/detail_prestasi', $data);
     }
 
+    
+
     // Mengedit data prestasi
     public function edit($id)
-    {
-        $session = session();
+{
+    $prestasi = $this->prestasiModel
+        ->select('M_Prestasi.*, M_Siswa.nama_siswa, m_tingkat.nama_tingkat, m_gelar.nama_gelar, m_kota.nama_kota, m_provinsi.nama_provinsi')
+        ->join('M_Siswa', 'M_Siswa.nis_siswa = M_Prestasi.nis_siswa', 'left')
+        ->join('m_tingkat', 'm_tingkat.id_tingkat = M_Prestasi.id_tingkat', 'left')
+        ->join('m_gelar', 'm_gelar.id_gelar = M_Prestasi.id_gelar', 'left')
+        ->join('m_kota', 'm_kota.id_kota = M_Prestasi.id_kota', 'left')
+        ->join('m_provinsi', 'm_provinsi.id_provinsi = M_Prestasi.id_provinsi', 'left')
+        ->find($id);
 
-        
-        // Ambil data prestasi berdasarkan ID
-        $prestasi = $this->prestasiModel->find($id);
-
-        // Jika data tidak ditemukan, tampilkan error
-        if (!$prestasi) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException("Data tidak ditemukan: $id");
-        }
-
-        if ($this->request->getMethod() === 'post') {
-            // Validasi data input
-            if (!$this->validate([
-                'jenis_prestasi' => 'required|in_list[Akademik,Non Akademik]',
-                'id_tingkat' => 'required',
-                'id_gelar' => 'required',
-                'id_bidang' => 'required',
-                'nama_pembina' => 'required|max_length[50]',
-                'id_ekskul' => 'required',
-                'nama_kegiatan' => 'required|max_length[100]',
-                'tempat' => 'required|max_length[100]',
-                'id_kota' => 'required',
-                'id_provinsi' => 'required',
-                'waktu_pelaksanaan' => 'required|valid_date',
-            ])) {
-                return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
-            }
-
-            $data = $this->request->getPost();
-
-            // Update data ke database
-            if ($this->prestasiModel->update($id, $data)) {
-                return redirect()->to(base_url('siswa/data_prestasi'))->with('success', 'Data prestasi berhasil diperbarui.');
-            }
-
-            return redirect()->back()->withInput()->with('error', 'Gagal memperbarui data prestasi.');
-        }
-
-        // Kirim data ke view
-        $data = [
-            'prestasi' => $prestasi,
-            'tingkat' => $this->prestasiModel->getDropdownOptions('m_tingkat', 'id_tingkat', 'nama_tingkat'),
-            'gelar' => $this->prestasiModel->getDropdownOptions('m_gelar', 'id_gelar', 'nama_gelar'),
-            'bidang' => $this->prestasiModel->getDropdownOptions('m_bidang', 'id_bidang', 'nama_bidang'),
-            'ekskul' => $this->prestasiModel->getDropdownOptions('m_ekskul', 'id_ekskul', 'nama_ekskul'),
-            'kota' => $this->prestasiModel->getDropdownOptions('m_kota', 'id_kota', 'nama_kota'),
-            'provinsi' => $this->prestasiModel->getDropdownOptions('m_provinsi', 'id_provinsi', 'nama_provinsi'),
-            'nama_siswa' => $session->get('nama_siswa'),
-        ];
-
-        return view('siswa/edit_prestasi', $data);
+    if (!$prestasi) {
+        throw new \CodeIgniter\Exceptions\PageNotFoundException("Data tidak ditemukan: $id");
     }
+
+    $session = session();
+    $data = [
+        'prestasi' => $prestasi,
+        'tingkat' => $this->prestasiModel->getDropdownOptions('m_tingkat', 'id_tingkat', 'nama_tingkat'),
+        'gelar' => $this->prestasiModel->getDropdownOptions('m_gelar', 'id_gelar', 'nama_gelar'),
+        'bidang' => $this->prestasiModel->getDropdownOptions('m_bidang', 'id_bidang', 'nama_bidang'),
+        'kota' => $this->prestasiModel->getDropdownOptions('m_kota', 'id_kota', 'nama_kota'),
+        'provinsi' => $this->prestasiModel->getDropdownOptions('m_provinsi', 'id_provinsi', 'nama_provinsi'),
+        'ekskul' => $this->prestasiModel->getDropdownOptions('m_ekskul', 'id_ekskul', 'nama_ekskul'),
+        'nis_siswa' => $session->get('nis_siswa'), // Kirimkan NIS siswa ke view
+    ];
+
+    return view('siswa/edit_prestasi', $data);
+}
+
+
+    
+    // Update data ke database
+    public function update($id)
+    {
+        if (!$this->validate($this->prestasiModel->getValidationRules())) {
+            session()->setFlashdata('error', 'Validasi gagal. Silakan periksa input Anda.');
+            return redirect()->back()->withInput();
+        }
+
+        $data = $this->request->getPost();
+        // dd($data);
+        if ($this->prestasiModel->update($id, $data)) {
+            session()->setFlashdata('success', 'Data prestasi berhasil diperbarui.');
+            return redirect()->to(base_url('siswa/data_prestasi'));
+        }
+
+        session()->setFlashdata('error', 'Gagal memperbarui data prestasi.');
+        return redirect()->back()->withInput();
+    }
+
 
     // Menghapus data prestasi
     public function delete($id)
@@ -187,6 +249,4 @@ class SiswaController extends BaseController
 
         return redirect()->back()->with('error', 'Gagal menghapus data prestasi.');
     }
-
-
 }

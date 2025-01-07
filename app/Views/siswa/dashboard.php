@@ -82,7 +82,7 @@
 <body>
     <header>
         <div class="container">
-            <div class="logo">PRESWA</div>
+            <div class="logo" >PRESWA</div>
             <nav>
                 <a href="<?= base_url('siswa/data_prestasi'); ?>">Beranda</a>
                 <a href="<?= base_url('siswa/tentang_kami'); ?>">Tentang Kami</a>
@@ -90,13 +90,16 @@
                 <a href="<?= base_url('siswa/faq'); ?>">FAQ</a>
                 <a href="<?= base_url('siswa/data_prestasi'); ?>">Prestasi</a>
                 <a href="<?= base_url('siswa/dashboard'); ?>"><?= $nama_siswa; ?></a>
+                <a class="nav-link" href="/logout">Logout</a>
+               
             </nav>
         </div>
     </header>
     <section class="hero-section">
         <div class="content">
             <h1>SMAFOUR <br>MELESAT</h1>
-            <button>Masukkan Prestasi</button>
+
+            <a href="<?= base_url('siswa/input_prestasi'); ?>" class="btn btn-primary mb-3">Masukkan Prestasi</a>
         </div>
         <div class="image">
             <img src="/dist/img/photo1.png" alt="School Building">

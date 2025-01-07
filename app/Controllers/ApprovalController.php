@@ -32,7 +32,8 @@ class ApprovalController extends BaseController
     {
         $data = [
             'title' => 'Persetujuan Prestasi Wakasek',
-            'prestasi' => $this->prestasiModel->where('persetujuan_wakasek', 'Menunggu')->findAll(),
+            'prestasi' => $this->prestasiModel->getAllPrestasiWithSiswa(),
+
         ];
 
         return view('wakasek/persetujuan_prestasi', $data);
@@ -98,4 +99,5 @@ class ApprovalController extends BaseController
 
         return redirect()->to("/$role/dashboard")->with('success', 'Prestasi berhasil ditolak.');
     }
+
 }

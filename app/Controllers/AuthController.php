@@ -40,8 +40,10 @@ class AuthController extends BaseController
                 // Redirect berdasarkan access_level
                 if ($user['access_level'] == 1) {
                     return redirect()->to('/admin/dashboard'); // Halaman admin
-                } else {
-                    return redirect()->to('/other/dashboard'); // Halaman role lain
+                } elseif ($user['access_level'] == 2) {
+                    return redirect()->to('/wakasek/dashboard'); // Halaman wakasek
+                } elseif ($user['access_level'] == 3) {
+                    return redirect()->to('/walikelas/dashboard'); // Halaman walikelas
                 }
             } else {
                 return redirect()->back()->with('error', 'Password salah.');
@@ -91,6 +93,6 @@ class AuthController extends BaseController
     public function logout()
     {
         session()->destroy();
-        return redirect()->to('/login'); // Kembali ke halaman login
+        return redirect()->to('/'); // Kembali ke halaman login
     }
 }

@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Prestasi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+<?= $this->extend('layouts/siswa') ?>
+
+<?= $this->section('content') ?>
     <div class="container my-5">
-        <h2 class="mb-4 text-center">Detail Prestasi</h2>
+        <h2 class="mb-4 text-center"><?= $title; ?></h2>
 
         <table class="table table-bordered">
             <tr>
@@ -21,11 +15,11 @@
             </tr>
             <tr>
                 <th>Tingkat</th>
-                <td><?= $prestasi['id_tingkat']; ?></td>
+                <td><?= $prestasi['nama_tingkat'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Gelar</th>
-                <td><?= $prestasi['id_gelar']; ?></td>
+                <td><?= $prestasi['nama_gelar'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Bidang</th>
@@ -37,7 +31,7 @@
             </tr>
             <tr>
                 <th>Ekskul</th>
-                <td><?= $prestasi['id_ekskul']; ?></td>
+                <td><?= $prestasi['nama_ekskul'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Tempat</th>
@@ -45,11 +39,11 @@
             </tr>
             <tr>
                 <th>Kota</th>
-                <td><?= $prestasi['id_kota']; ?></td>
+                <td><?= $prestasi['kota'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Provinsi</th>
-                <td><?= $prestasi['id_provinsi']; ?></td>
+                <td><?= $prestasi['provinsi'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Persetujuan Wali Kelas</th>
@@ -65,27 +59,38 @@
             </tr>
             <tr>
                 <th>Jumlah Sekolah</th>
-                <td><?= $prestasi['jumlah_sekolah']; ?></td>
+                <td><?= $prestasi['jumlah_sekolah'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Jumlah Peserta</th>
-                <td><?= $prestasi['jumlah_peserta']; ?></td>
+                <td><?= $prestasi['jumlah_peserta'] ?? 'Tidak tersedia'; ?></td>
             </tr>
             <tr>
                 <th>Waktu Pelaksanaan</th>
-                <td><?= $prestasi['waktu_pelaksanaan']; ?></td>
+                <td><?= date('d-m-Y', strtotime($prestasi['waktu_pelaksanaan'])); ?></td>
             </tr>
             <tr>
                 <th>Bukti Sertifikat</th>
-                <td><a href="<?= base_url('uploads/' . $prestasi['bukti_sertif']); ?>" target="_blank">Lihat Sertifikat</a></td>
+                <td>
+                    <?php if (!empty($prestasi['bukti_sertif'])): ?>
+                        <a href="<?= base_url('uploads/sertifikat/' . $prestasi['bukti_sertif']); ?>" target="_blank">Lihat Sertifikat</a>
+                    <?php else: ?>
+                        Tidak tersedia
+                    <?php endif; ?>
+                </td>
             </tr>
             <tr>
                 <th>Bukti Kegiatan</th>
-                <td><a href="<?= base_url('uploads/' . $prestasi['bukti_kegiatan']); ?>" target="_blank">Lihat Bukti</a></td>
+                <td>
+                    <?php if (!empty($prestasi['bukti_kegiatan'])): ?>
+                        <a href="<?= base_url('uploads/kegiatan/' . $prestasi['bukti_kegiatan']); ?>" target="_blank">Lihat Bukti</a>
+                    <?php else: ?>
+                        Tidak tersedia
+                    <?php endif; ?>
+                </td>
             </tr>
         </table>
 
         <a href="<?= base_url('siswa/data_prestasi'); ?>" class="btn btn-primary mt-3">Kembali</a>
     </div>
-</body>
-</html>
+    <?= $this->endSection() ?>

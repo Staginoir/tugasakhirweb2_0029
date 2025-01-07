@@ -271,5 +271,4 @@ class AdminController extends BaseController
         return view('admin/pelaporan_prestasi', $data);
     }
 
-
 }
