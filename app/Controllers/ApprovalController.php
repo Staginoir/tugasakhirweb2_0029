@@ -30,9 +30,15 @@ class ApprovalController extends BaseController
     // Persetujuan Prestasi untuk Wakasek
     public function persetujuanPrestasi()
     {
+        $allPrestasi = $this->prestasiModel->getAllPrestasiWithSiswa();
+        // dd($allPrestasi);
+        $filteredPrestasi = array_filter($allPrestasi, function ($prestasi) {
+            return $prestasi['persetujuan_wakasek'] === 'Menunggu'; // Sesuaikan key dan value
+        });
+
         $data = [
             'title' => 'Persetujuan Prestasi Wakasek',
-            'prestasi' => $this->prestasiModel->getAllPrestasiWithSiswa(),
+            'prestasi' => $filteredPrestasi,
 
         ];
 
@@ -56,9 +62,16 @@ class ApprovalController extends BaseController
     // Persetujuan Prestasi untuk Wali Kelas
     public function persetujuan_prestasi()
     {
+        $allPrestasi = $this->prestasiModel->getAllPrestasiWithSiswa();
+        // dd($allPrestasi);
+        $filteredPrestasi = array_filter($allPrestasi, function ($prestasi) {
+            return $prestasi['persetujuan_walkelas'] === 'Menunggu'; // Sesuaikan key dan value
+        });
+
         $data = [
-            'title' => 'Persetujuan Prestasi Wali Kelas',
-            'prestasi' => $this->prestasiModel->where('persetujuan_walkelas', 'Menunggu')->findAll(),
+            'title' => 'Persetujuan Prestasi Walikelas',
+            'prestasi' => $filteredPrestasi,
+
         ];
 
         return view('walikelas/persetujuan_prestasi', $data);
@@ -68,18 +81,17 @@ class ApprovalController extends BaseController
     public function approve($id_prestasi)
     {
         $session = session();
-        $role = $session->get('role');
-
+        $role = $session->get('access_level');
         // Update persetujuan berdasarkan role
-        if ($role === 'Wakasek') {
+        if ($role === '2') {
             $this->prestasiModel->update($id_prestasi, ['persetujuan_wakasek' => 'Diterima']);
-        } elseif ($role === 'Wali Kelas') {
+            return redirect()->to("/wakasek/persetujuan_prestasi")->with('success', 'Prestasi berhasil disetujui.');
+        } elseif ($role === '3') {
             $this->prestasiModel->update($id_prestasi, ['persetujuan_walkelas' => 'Diterima']);
+            return redirect()->to("/walikelas/persetujuan_prestasi")->with('success', 'Prestasi berhasil disetujui.');
         } else {
             return redirect()->to('/')->with('error', 'Anda tidak memiliki akses.');
         }
-
-        return redirect()->to("/$role/dashboard")->with('success', 'Prestasi berhasil disetujui.');
     }
 
     // Proses Reject
@@ -99,5 +111,4 @@ class ApprovalController extends BaseController
 
         return redirect()->to("/$role/dashboard")->with('success', 'Prestasi berhasil ditolak.');
     }
-
 }

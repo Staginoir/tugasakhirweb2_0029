@@ -33,6 +33,28 @@
         .badge-warning {
             background-color: #ffc107;
         }
+        .status-diterima {
+            background-color: #28a745;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-ditolak {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-menunggu {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -47,7 +69,7 @@
                     <li class="nav-item"><a class="nav-link" href="#">Panduan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#">Prestasi</a></li>
-                    <li class="nav-item"><a href="<?= base_url('siswa/dashboard'); ?>"><?= $nama_siswa; ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/dashboard'); ?>"><?= $nama_siswa; ?></a></li>
                 </ul>
             </div>
         </div>
@@ -79,7 +101,8 @@
                     <th>Tingkat</th>
                     <th>Gelar</th>
                     <th>Waktu Pelaksanaan</th>
-                    <th>Persetujuan</th>
+                    <th>Persetujuan Wali Kelas</th>
+                    <th>Persetujuan Wakasek</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
@@ -94,11 +117,30 @@
                             <td><?= $item['tingkat'] ?? '-'; ?></td>
                             <td><?= $item['gelar'] ?? '-'; ?></td>
                             <td><?= $item['waktu_pelaksanaan'] ?? '-'; ?></td>
-                            <td>
-                                <span class="badge <?= isset($item['status']) && $item['status'] === 'Diterima' ? 'badge-success' : 'badge-warning'; ?>">
-                                    <?= $item['status'] ?? 'Menunggu'; ?>
-                                </span>
-                            </td>
+                            <td class="text-center">
+                    <?php 
+                        $walkelas = $item['persetujuan_walkelas'] ?? 'Menunggu';
+                        if ($walkelas === 'Diterima') {
+                            echo '<span class="status-diterima">Diterima</span>';
+                        } elseif ($walkelas === 'Ditolak') {
+                            echo '<span class="status-ditolak">Ditolak</span>';
+                        } else {
+                            echo '<span class="status-menunggu">Menunggu</span>';
+                        }
+                    ?>
+                </td>
+                <td class="text-center">
+                    <?php 
+                        $wakasek = $item['persetujuan_wakasek'] ?? 'Menunggu';
+                        if ($wakasek === 'Diterima') {
+                            echo '<span class="status-diterima">Diterima</span>';
+                        } elseif ($wakasek === 'Ditolak') {
+                            echo '<span class="status-ditolak">Ditolak</span>';
+                        } else {
+                            echo '<span class="status-menunggu">Menunggu</span>';
+                        }
+                    ?>
+                </td>
                             <td>
                                 <a href="<?= base_url('siswa/edit/' . $item['id_prestasi']); ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>

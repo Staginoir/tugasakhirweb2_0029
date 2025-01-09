@@ -85,16 +85,30 @@ class AdminController extends BaseController
     public function masterDataSiswa()
     {
         $model = new \App\Models\MSiswaModel();
+        $kelasModel = new \App\Models\KelasModel();
         $data['siswa'] = $model->getSiswaWithKelas();
+        $data['kelas'] = $kelasModel->findAll();
+        
 
         return view('admin/master_data_siswa', $data);
     }
 
-    
+    // tambah siswa
     public function addStudent()
     {
+        $session = session();
+        $model = new \App\Models\MSiswaModel();
+        $data['siswa'] = $model->getSiswaWithKelas();
+
+        // Ambil data kelas menggunakan model
+        $data['kelas'] = $this->kelasModel->findAll();
+        // dd($data['kelas']);
         if ($this->request->getMethod() === 'post') {
-            // Ambil data dari form
+            dd([
+                'posted_token' => $this->request->getPost('_csrf_token'),
+                'session_token' => session()->get('_csrf_token'),
+            ]);
+            // // Ambil data dari form
             $data = $this->request->getPost([
                 'nis_siswa',
                 'nama_siswa',
@@ -105,6 +119,8 @@ class AdminController extends BaseController
                 'passw_siswa',
             ]);
 
+            $data['passw_siswa'] = password_hash($data['passw_siswa'], PASSWORD_DEFAULT);
+
             // Simpan data ke database
             if (!$this->siswaModel->insert($data)) {
                 return redirect()->back()->withInput()->with('errors', $this->siswaModel->errors());
@@ -113,9 +129,7 @@ class AdminController extends BaseController
             return redirect()->to(base_url('admin/master_data_siswa'))->with('message', 'Siswa berhasil ditambahkan.');
         }
 
-        // Ambil data kelas menggunakan model
-        $data['kelas'] = $this->kelasModel->findAll();
-
+        
         // Kirim data kelas ke view
         return view('admin/master_data_siswa', $data);
     }

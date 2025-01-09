@@ -102,6 +102,7 @@
                         <div class="modal fade" id="editTeacherModal-<?= $teacher['id_guru']; ?>" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form action="<?= base_url('admin/edit-guru/' . $teacher['id_guru']); ?>" method="post">
+                                    <?= csrf_field() ?>
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Edit Guru</h5>
@@ -143,6 +144,7 @@
     <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <form action="<?= base_url('admin/add-guru'); ?>" method="post">
+            <?= csrf_field() ?>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Guru</h5>

@@ -33,9 +33,9 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
 
     // Master Data Siswa
     $routes->get('master_data_siswa', 'AdminController::masterDataSiswa');// Lihat daftar siswa
-    $routes->post('add-siswa', 'AdminController::create');       // Tambah siswa
-    $routes->post('edit-siswa/(:num)', 'AdminController::update/$1'); // Edit siswa
-    $routes->get('delete-siswa/(:segment)', 'AdminController::delete/$1'); // Hapus siswa
+    $routes->post('addstudent', 'AdminController::addStudent');       // Tambah siswa
+    $routes->post('editstudent/(:num)', 'AdminController::update/$1'); // Edit siswa
+    $routes->get('deletestudent/(:segment)', 'AdminController::delete/$1'); // Hapus siswa
 
     // Master Data Guru
     $routes->get('master_data_guru', 'AdminController::masterDataGuru'); // Lihat daftar guru
@@ -65,8 +65,8 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
 // Routes untuk Wakasek
 $routes->group('wakasek', ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'ApprovalController::wakasekDashboard');
-    $routes->get('approve/(:segment)', 'ApprovalController::approve/$1');
-    $routes->get('reject/(:segment)', 'ApprovalController::reject/$1');
+    $routes->post('approve/(:num)', 'ApprovalController::approve/$1');
+    $routes->post('reject/(:num)', 'ApprovalController::reject/$1');
     $routes->get('persetujuan_prestasi', 'ApprovalController::persetujuanPrestasi');
 
 });

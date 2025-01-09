@@ -28,6 +28,7 @@
     </style>
 </head>
 <body>
+        
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -105,7 +106,7 @@
                 <td><?= $index + 1; ?></td>
                 <td><?= $siswa['nis_siswa']; ?></td>
                 <td><?= $siswa['nama_siswa']; ?></td>                
-                <td><?= $siswa['id_kelas']; ?></td>
+                <td><?= $siswa['nama_kelas']; ?></td>
                 <td><?= $siswa['jenis_kelamin']; ?></td>
                 <td><?= $siswa['alamat_siswa']; ?></td>
                 <td><?= $siswa['kontak_siswa']; ?></td>
@@ -169,10 +170,12 @@
     </tbody>
 </table>
 
+
 <!-- Modal Tambah Siswa -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="<?= base_url('admin/add-student'); ?>" method="post">
+    <form action="<?= base_url('admin/addstudent'); ?>" method="post">
+        <?= csrf_field() ?>
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Siswa</h5>
@@ -188,14 +191,11 @@
                         <input type="text" class="form-control" name="nama_siswa" required>
                     </div>
                     <div class="mb-3">
-                        <label for="id_kelas" class="form-label">Kelas</label>
-                        <select name="id_kelas" class="form-select" required>
-                            <option value="">-- Pilih Kelas --</option>
-                            <?php if (!empty($kelas)): ?>
-                                <?php foreach ($kelas as $k): ?>
-                                    <option value="<?= $k['id_kelas']; ?>"><?= $k['nama_kelas']; ?></option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                    <label for="id_kelas">Kelas:</label>
+                        <select name="id_kelas" id="id_kelas" required>
+                            <?php foreach ($kelas as $k): ?>
+                                <option value="<?= $k['id_kelas'] ?>"><?= $k['nama_kelas'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 

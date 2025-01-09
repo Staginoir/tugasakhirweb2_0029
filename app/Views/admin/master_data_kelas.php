@@ -102,6 +102,7 @@
                         <div class="modal fade" id="editKelasModal-<?= $class['id_kelas']; ?>" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form action="<?= base_url('admin/edit-kelas/' . $class['id_kelas']); ?>" method="post">
+                                <?= csrf_field() ?>
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Edit Kelas</h5>
@@ -143,6 +144,7 @@
     <div class="modal fade" id="addKelasModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <form action="<?= base_url('admin/add-kelas'); ?>" method="post">
+            <?= csrf_field() ?>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Kelas</h5>

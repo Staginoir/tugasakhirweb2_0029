@@ -156,16 +156,18 @@
                                         }
                                     ?>
                                 </td>
-                                    <td class="action-buttons">
-                                        <form action="/approve_prestasi" method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="<?= $prestasiItem['id_prestasi']; ?>">
-                                            <button type="submit" class="btn btn-success btn-sm">Setujui</button>
-                                        </form>
-                                        <form action="/reject_prestasi" method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="<?= $prestasiItem['id_prestasi']; ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                                        </form>
-                                    </td>
+                                <td class="action-buttons">
+                                <?= csrf_field() ?>
+                                    <form action="/walikelas/approve/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                        <?= csrf_field(); ?>
+                                        <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                    </form>
+                                    <form action="/walikelas/reject/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                        <?= csrf_field(); ?>
+                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                    </form>
+                                </td>
+
                                 </tr>
                             <?php endforeach; ?>
                         <?php else : ?>

@@ -35,6 +35,28 @@
         .navbar {
             margin-bottom: 20px;
         }
+        .status-diterima {
+            background-color: #28a745;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-ditolak {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status-menunggu {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -86,28 +108,65 @@
                                 <th>No</th>
                                 <th>Nama Siswa</th>
                                 <th>Prestasi</th>
-                                <th>Tanggal Pengajuan</th>
+                                <th>Jenis Prestasi</th>
+                                <th>Ekstrakurikuler</th>
+                                <th>Nama Kegiatan</th>
+                                <th>Tingkat</th>
+                                <th>Gelar</th>
+                                <th>Waktu Pelaksanaan</th>
+                                <th>Persetujuan Wali Kelas</th>
+                                <th>Persetujuan Wakasek</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($prestasiList)) : ?>
-                                <?php foreach ($prestasiList as $index => $prestasi) : ?>
-                                    <tr>
-                                        <td><?= $index + 1; ?></td>
-                                        <td><?= $prestasi['nama_siswa']; ?></td>
-                                        <td><?= $prestasi['jenis_prestasi']; ?></td>
-                                        <td><?= $prestasi['tanggal_pengajuan']; ?></td>
-                                        <td class="action-buttons">
-                                            <form action="/approve_prestasi" method="POST" class="d-inline">
-                                                <input type="hidden" name="id" value="<?= $prestasi['id']; ?>">
-                                                <button type="submit" class="btn btn-success btn-sm">Setujui</button>
-                                            </form>
-                                            <form action="/reject_prestasi" method="POST" class="d-inline">
-                                                <input type="hidden" name="id" value="<?= $prestasi['id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                                            </form>
-                                        </td>
+                        <?php if (!empty($prestasi)) : ?>
+                            <?php foreach ($prestasi as $index => $prestasiItem) : ?>
+                                <tr>
+                                    <td><?= $index + 1; ?></td>
+                                    <td><?= $prestasiItem['nama_siswa']; ?></td>
+                                    <td><?= $prestasiItem['nama_kelas']; ?></td>
+                                    <td><?= $prestasiItem['jenis_prestasi']; ?></td>
+                                    <td><?= $prestasiItem['ekstrakurikuler']; ?></td>
+                                    <td><?= $prestasiItem['nama_kegiatan']; ?></td>
+                                    <td><?= $prestasiItem['tingkat']; ?></td>
+                                    <td><?= $prestasiItem['gelar']; ?></td>
+                                    <td><?= $prestasiItem['waktu_pelaksanaan']; ?></td>
+                                    <td class="text-center">
+                                    <?php 
+                                        $walkelas = $prestasiItem['persetujuan_walkelas'] ?? 'Menunggu';
+                                        if ($walkelas === 'Diterima') {
+                                            echo '<span class="status-diterima">Diterima</span>';
+                                        } elseif ($walkelas === 'Ditolak') {
+                                            echo '<span class="status-ditolak">Ditolak</span>';
+                                        } else {
+                                            echo '<span class="status-menunggu">Menunggu</span>';
+                                        }
+                                    ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php 
+                                        $wakasek = $prestasiItem['persetujuan_wakasek'] ?? 'Menunggu';
+                                        if ($wakasek === 'Diterima') {
+                                            echo '<span class="status-diterima">Diterima</span>';
+                                        } elseif ($wakasek === 'Ditolak') {
+                                            echo '<span class="status-ditolak">Ditolak</span>';
+                                        } else {
+                                            echo '<span class="status-menunggu">Menunggu</span>';
+                                        }
+                                    ?>
+                                </td>
+                                <td class="action-buttons">
+                                <?= csrf_field() ?>
+                                    <form action="/wakasek/approve/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                        <?= csrf_field(); ?>
+                                        <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                    </form>
+                                    <form action="/wakasek/reject/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                        <?= csrf_field(); ?>
+                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                    </form>
+                                </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else : ?>
