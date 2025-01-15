@@ -34,8 +34,8 @@ $routes->group('admin', ['filter' => 'access_level:1'], function ($routes) {
     // Master Data Siswa
     $routes->get('master_data_siswa', 'AdminController::masterDataSiswa');// Lihat daftar siswa
     $routes->post('addstudent', 'AdminController::addStudent');       // Tambah siswa
-    $routes->post('editstudent/(:num)', 'AdminController::update/$1'); // Edit siswa
-    $routes->get('deletestudent/(:segment)', 'AdminController::delete/$1'); // Hapus siswa
+    $routes->post('edit-student/(:num)', 'AdminController::editStudent/$1'); // Edit siswa
+    $routes->get('delete-student/(:num)', 'AdminController::deleteStudent/$1'); // Hapus siswa
 
     // Master Data Guru
     $routes->get('master_data_guru', 'AdminController::masterDataGuru'); // Lihat daftar guru
@@ -91,6 +91,10 @@ $routes->group('siswa', ['filter' => 'auth'], function ($routes) {
     $routes->get('edit/(:num)', 'SiswaController::edit/$1'); // Menampilkan form edit
     $routes->post('edit/(:num)', 'SiswaController::update/$1'); // Memproses update data
     $routes->get('delete/(:num)', 'SiswaController::delete/$1'); // Menghapus data
+    $routes->get('tentang_kami', 'SiswaController::tentangKami');
+    $routes->get('faq', 'SiswaController::faq');
+    $routes->get('panduan', 'SiswaController::panduan');
+
 });
 
 

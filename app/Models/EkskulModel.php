@@ -16,4 +16,3 @@ class EkskulModel extends Model
                     ->findAll();
     }
 }
-

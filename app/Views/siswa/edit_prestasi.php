@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/siswa') ?>
 
 <?= $this->section('content') ?>
+
 <div class="container mt-4">
     <h2>Edit Prestasi</h2>
     <form action="<?= base_url('siswa/edit/' . $prestasi['id_prestasi']) ?>" method="post" enctype="multipart/form-data">

@@ -44,21 +44,58 @@
             font-weight: bold;
         }
 
-        /* Cetak hanya tabel */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .print-section, .print-section * {
-                visibility: visible;
-            }
-            .print-section {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-            }
+            /* Gaya khusus untuk cetak */
+    @media print {
+        body * {
+            visibility: hidden;
+            font-size: 12px;
         }
+        th, td {
+        font-size: 12px;
+        padding: 5px; /* Menambah ruang di dalam sel */
+    }
+
+    
+        .print-section, .print-section * {
+            visibility: visible;
+        }
+        .print-section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        /* Margin cetak dan orientasi landscape */
+        @page {
+            size: A4 landscape; /* Mengatur halaman menjadi landscape */
+            margin: 15mm; /* Margin kertas */
+        }
+        .print-section {
+            margin: 0;
+        }
+        /* Tabel fleksibel */
+        table {
+            width: 100%;
+            table-layout: fixed; /* Mengatur tabel agar kolom memiliki lebar tetap */
+            border-collapse: collapse;
+        }
+        th, td {
+            word-wrap: break-word; /* Memastikan teks tidak melampaui kolom */
+            white-space: normal; /* Membiarkan teks membungkus */
+        }
+        /* Lebar spesifik untuk kolom tertentu */
+        th:nth-child(1), td:nth-child(1) { /* Kolom No */
+            width: 5%;
+        }
+        th:nth-child(2), td:nth-child(2) { /* Nama Siswa */
+            width: 15%;
+        }
+        th:nth-child(10), td:nth-child(10), 
+        th:nth-child(11), td:nth-child(11) { /* Persetujuan */
+            width: 10%; /* Lebar cukup untuk kolom persetujuan */
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -118,6 +155,8 @@
                 <div class="print-section">
                     <h2 class="text-center">Laporan Data Prestasi</h2>
                     <h5 class="text-center">SMAN 4 CIBINONG</h5>
+
+                    
                     
                     <!-- Tabel Data Prestasi -->
                     <div class="table-responsive mt-4">
@@ -143,7 +182,7 @@
             <tr>
                 <td class="text-center"><?= $index + 1; ?></td>
                 <td><?= $prestasi['nama_siswa']; ?></td>
-                <td><?= $prestasi['kelas']; ?></td>
+                <td><?= $prestasi['nama_kelas']; ?></td>
                 <td><?= $prestasi['jenis_prestasi']; ?></td>
                 <td><?= $prestasi['ekstrakurikuler']; ?></td>
                 <td><?= $prestasi['nama_kegiatan']; ?></td>

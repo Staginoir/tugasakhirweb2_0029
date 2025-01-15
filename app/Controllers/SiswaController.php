@@ -148,8 +148,9 @@ class SiswaController extends BaseController
 
         // Ambil data prestasi berdasarkan ID dengan relasi
         $prestasi = $this->prestasiModel
-                 ->select('M_Prestasi.*, M_Siswa.nama_siswa, m_ekskul.nama_ekskul, m_tingkat.nama_tingkat, m_gelar.nama_gelar, m_kota.nama_kota AS kota, m_provinsi.nama_provinsi AS provinsi')
+                 ->select('M_Prestasi.*, M_Siswa.nama_siswa, m_bidang.nama_bidang, m_ekskul.nama_ekskul, m_tingkat.nama_tingkat, m_gelar.nama_gelar, m_kota.nama_kota AS kota, m_provinsi.nama_provinsi AS provinsi')
                  ->join('M_Siswa', 'M_Siswa.nis_siswa = M_Prestasi.nis_siswa', 'left')
+                 ->join('m_bidang','m_bidang.id_bidang = M_Prestasi.id_bidang', 'left')
                  ->join('m_ekskul', 'm_ekskul.id_ekskul = M_Prestasi.id_ekskul', 'left')
                  ->join('m_tingkat', 'm_tingkat.id_tingkat = M_Prestasi.id_tingkat', 'left')
                  ->join('m_gelar', 'm_gelar.id_gelar = M_Prestasi.id_gelar', 'left')
@@ -249,4 +250,23 @@ class SiswaController extends BaseController
 
         return redirect()->back()->with('error', 'Gagal menghapus data prestasi.');
     }
+
+    public function tentangKami()
+    {
+        return view('siswa/tentang_kami'); 
+    }
+
+    public function faq()
+    {
+        // Menampilkan view FAQ
+        return view('siswa/faq');
+    }
+
+    public function panduan()
+    {
+        return view('siswa/panduan'); // Pastikan file panduan.php disimpan di folder Views
+    }
+
+
+
 }

@@ -25,11 +25,6 @@ class MUser extends Migration
                 'type' => 'ENUM',
                 'constraint' => ['Admin', 'Kesiswaan', 'Wakasek', 'Wali Kelas', 'Siswa'],
             ],
-            'nis_siswa' => [
-                'type' => 'VARCHAR',
-                'constraint' => 5,
-                'null' => true,
-            ],
             'id_guru' => [
                 'type' => 'VARCHAR',
                 'constraint' => 16,
@@ -42,7 +37,6 @@ class MUser extends Migration
             ],
         ]);
         $this->forge->addPrimaryKey('id_user');
-        $this->forge->addForeignKey('nis_siswa', 'M_Siswa', 'nis_siswa', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_guru', 'M_Guru', 'id_guru', 'CASCADE', 'CASCADE');
         $this->forge->createTable('User');
     }

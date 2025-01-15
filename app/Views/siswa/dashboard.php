@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
-            margin: 0;
+            margin: 0px;
             font-family: 'Poppins', Arial, sans-serif;
         }
         header {
@@ -18,6 +18,7 @@
         .container {
             width: 90%;
             margin: auto;
+            margin-top: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -34,7 +35,7 @@
         }
 
         nav {
-            margin-right: 200px;
+            margin-right: 180px;
             display: flex;
             gap: 30px; /* Mengatur jarak antar menu */
         }
@@ -89,11 +90,13 @@
         .hero-section h1 {
             font-size: 48px;
             margin: 0;
+            margin-left: 80px;
             font-weight: 700;
         }
         .hero-section a.btn {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 0;
+            margin: 100px;
             padding: 12px 25px;
             background-color: orange;
             border: none;
@@ -123,7 +126,7 @@
 <body>
     <header>
         <div class="container">
-            <a class="logo nav-link" href="<?= base_url('siswa/dashboard'); ?>">PRESWA</a>
+            <a class="logo nav-link" href="<?= base_url('siswa/dashboard'); ?>">ℙℝ𝔼𝕊𝕎𝔸</a>
             <nav>
                 <a href="<?= base_url('siswa/data_prestasi'); ?>">Beranda</a>
                 <a href="<?= base_url('siswa/tentang_kami'); ?>">Tentang Kami</a>
@@ -137,7 +140,7 @@
     </header>
     <section class="hero-section">
         <div class="content">
-            <h1 style="font-size: 65px;">SMAFOUR <br>MELESAT</h1>
+            <h1 style="font-size: 65px; ">SMAFOUR <br>MELESAT</h1>
             <a class="btn" href="<?= base_url('siswa/input_prestasi'); ?>">Masukkan Prestasi</a>
         </div>
         <div class="image">

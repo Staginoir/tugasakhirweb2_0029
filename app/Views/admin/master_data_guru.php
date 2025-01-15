@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Master Data Guru</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         .sidebar {
             min-height: 100vh;
@@ -95,7 +97,7 @@
                             <td><?= $teacher['status_jabatan']; ?></td>
                             <td>
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editTeacherModal-<?= $teacher['id_guru']; ?>">Edit</button>
-                                <a href="<?= base_url('admin/delete-teacher/' . $teacher['id_guru']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</a>
+                                <a href="<?= base_url('admin/delete-guru/' . $teacher['id_guru']); ?>" class="btn btn-danger btn-sm delete-button" >Hapus</a>
                             </td>
                         </tr>
 
@@ -140,7 +142,7 @@
             </div>
         </div>
     </div>
-
+<!-- tambah guru -->
     <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <form action="<?= base_url('admin/add-guru'); ?>" method="post">
@@ -180,6 +182,51 @@
             </form>
         </div>
     </div>
+    <script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default action
+            const url = this.getAttribute('href');
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus dan tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to delete action
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+</script>
+
+    <script>
+    // Cek jika ada flash message dari server (gunakan PHP atau framework backend)
+    <?php if (session()->getFlashdata('success')): ?>
+        Swal.fire({
+            title: 'Berhasil!',
+            text: "<?= session()->getFlashdata('success'); ?>",
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    <?php elseif (session()->getFlashdata('error')): ?>
+        Swal.fire({
+            title: 'Gagal!',
+            text: "<?= session()->getFlashdata('error'); ?>",
+            icon: 'error',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+        });
+    <?php endif; ?>
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

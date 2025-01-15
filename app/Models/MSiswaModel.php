@@ -25,7 +25,7 @@ class MSiswaModel extends Model
         'jenis_kelamin' => 'required|in_list[Laki-laki,Perempuan]',
         'alamat_siswa' => 'permit_empty|max_length[255]',
         'kontak_siswa' => 'permit_empty|numeric|max_length[15]',
-        'passw_siswa' => 'required|max_length[20]',
+        'passw_siswa' => 'required|max_length[255]',
     ];
 
     protected $validationMessages = [

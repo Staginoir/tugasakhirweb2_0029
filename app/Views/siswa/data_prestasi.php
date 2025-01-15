@@ -5,21 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Prestasi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="<?= base_url('public/plugins/fontawesome-free/css/all.min.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('public/dist/css/adminlte.min.css'); ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
         }
         .navbar {
+            
             background-color: #0056b3;
+        }
+        .navbar-collapse {
+            margin-right: 80px;
         }
         .navbar-brand, .nav-link {
             color: white !important;
         }
+        .navbar-brand{
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: auto;
+            margin-left: 50px;
+            color: white; /* Mengubah warna teks menjadi putih */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Menambahkan efek bayangan */
+            font-family: 'Poppins', sans-serif; /* Pastikan font family sudah diterapkan */
+            text-decoration: none; 
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .container-b{
+            margin: 80px;
+        }
         .content-header {
+            
             background: linear-gradient(to bottom, #007bff, #66b2ff);
             color: white;
             padding: 15px 20px;
+            text-align: center;
+            
         }
         .btn-primary {
             background-color: #007bff;
@@ -59,27 +86,29 @@
 </head>
 <body>
     <!-- Navbar -->
+     <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">PRESWA</a>
+            <a class="navbar-brand" href="<?= base_url('siswa/dashboard'); ?>">ℙℝ𝔼𝕊𝕎𝔸</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/data_prestasi'); ?>">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Panduan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Prestasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/tentang_kami'); ?>"">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/panduan'); ?>">Panduan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/faq'); ?>">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="<?= base_url('siswa/data_prestasi'); ?>">Prestasi</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= base_url('siswa/dashboard'); ?>"><?= $nama_siswa; ?></a></li>
+                   
                 </ul>
             </div>
         </div>
     </nav>
-
+    </header>
     <!-- Content Header -->
     <div class="content-header">
-        <div class="container">
+        <div class="container-b">
             <p>BERANDA - PRESTASI</p>
-            <h2>Data Prestasi</h2>
+            <h2 style="font-weight: bold;">Data Prestasi</h2>
         </div>
     </div>
 
@@ -164,6 +193,7 @@
     </div>
 
 <script>
+    
     // Fungsi Pencarian Berdasarkan Nama Kegiatan
     document.getElementById('search').addEventListener('input', function () {
         const searchValue = this.value.toLowerCase();

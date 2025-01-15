@@ -1,6 +1,13 @@
 <?= $this->extend('layouts/siswa') ?>
 
 <?= $this->section('content') ?>
+<!-- Content Header -->
+<div class="content-header">
+        <div class="container-b">
+            <p>BERANDA - PRESTASI</p>
+            <h2>Detail Data Prestasi</h2>
+        </div>
+    </div>
     <div class="container my-5">
         <h2 class="mb-4 text-center"><?= $title; ?></h2>
 
@@ -23,7 +30,8 @@
             </tr>
             <tr>
                 <th>Bidang</th>
-                <td><?= $prestasi['id_bidang']; ?></td>
+                
+                <td><?= $prestasi['nama_bidang']; ?></td>
             </tr>
             <tr>
                 <th>Nama Pembina</th>
