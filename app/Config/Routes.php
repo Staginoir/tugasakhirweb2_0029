@@ -68,6 +68,11 @@ $routes->group('wakasek', ['filter' => 'auth'], function ($routes) {
     $routes->post('approve/(:num)', 'ApprovalController::approve/$1');
     $routes->post('reject/(:num)', 'ApprovalController::reject/$1');
     $routes->get('persetujuan_prestasi', 'ApprovalController::persetujuanPrestasi');
+    $routes->get('semua_prestasi', 'ApprovalController::semuaPrestasi');
+    $routes->get('detail_prestasi/(:num)', 'ApprovalController::detailPrestasi/$1');
+    $routes->post('update_approval/(:num)/(:any)', 'ApprovalController::updateApproval/$1/$2');
+
+
 
 });
 
@@ -77,6 +82,8 @@ $routes->group('walikelas', ['filter' => 'auth'], function ($routes) {
     $routes->get('approve/(:segment)', 'ApprovalController::approve/$1');
     $routes->get('reject/(:segment)', 'ApprovalController::reject/$1');
     $routes->get('persetujuan_prestasi','ApprovalController::persetujuan_prestasi');
+    $routes->get('semua_prestasi', 'ApprovalController::semuaPrestasiwali');
+    $routes->get('detail_prestasi/(:num)', 'ApprovalController::detailPrestasi/$1');
 });
 
 

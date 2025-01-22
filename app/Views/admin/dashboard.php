@@ -6,6 +6,8 @@
     <title><?= $title; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         .sidebar {
             min-height: 100vh;
@@ -127,6 +129,29 @@
                     </div>
                 </div>
 
+                <script>
+    // Fungsi untuk mengonfirmasi logout menggunakan SweetAlert
+    document.querySelector('.nav-link[href="/logout"]').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah pengalihan halaman langsung
+        
+        // Menampilkan SweetAlert konfirmasi
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda akan keluar dari akun ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna memilih untuk logout, arahkan ke halaman logout
+                window.location.href = '/logout';
+            }
+        });
+    });
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

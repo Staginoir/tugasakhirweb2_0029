@@ -227,7 +227,29 @@
         });
     <?php endif; ?>
 </script>
-
+<script>
+    // Fungsi untuk mengonfirmasi logout menggunakan SweetAlert
+    document.querySelector('.nav-link[href="/logout"]').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah pengalihan halaman langsung
+        
+        // Menampilkan SweetAlert konfirmasi
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda akan keluar dari akun ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna memilih untuk logout, arahkan ke halaman logout
+                window.location.href = '/logout';
+            }
+        });
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -88,7 +88,6 @@ class AuthController extends BaseController
     }
         
 
-
     // Logout untuk admin atau siswa
     public function logout()
     {

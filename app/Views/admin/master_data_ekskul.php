@@ -71,8 +71,10 @@
             </div>
             <div class="col-md-10 mt-4">
                 <h2 class="mb-4">Master Data Ekstrakurikuler</h2>
-                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEkskulModal">Tambah Ekstrakurikuler</button>
-
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEkskulModal">Tambah Ekstrakurikuler</button>
+                    <!-- <input type="text" id="searchInput" class="form-control w-25" placeholder="Cari berdasarkan nama..." /> -->
+                </div>
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
@@ -242,7 +244,45 @@
         });
     <?php endif; ?>
 </script>
+<script>
+    // Fungsi untuk mengonfirmasi logout menggunakan SweetAlert
+    document.querySelector('.nav-link[href="/logout"]').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah pengalihan halaman langsung
+        
+        // Menampilkan SweetAlert konfirmasi
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda akan keluar dari akun ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna memilih untuk logout, arahkan ke halaman logout
+                window.location.href = '/logout';
+            }
+        });
+    });
+</script>
+<!-- <script>
+    // Fungsi untuk mencari berdasarkan nama ekstrakurikuler
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase(); // Ambil nilai input dalam huruf kecil
+        const rows = document.querySelectorAll('#tableBody tr'); // Ambil semua baris tabel
 
+        rows.forEach(row => {
+            const namaEkskul = row.cells[2].textContent.toLowerCase(); // Ambil teks dari kolom Nama Ekstrakurikuler
+            if (namaEkskul.includes(searchValue)) {
+                row.style.display = ''; // Tampilkan baris jika cocok
+            } else {
+                row.style.display = 'none'; // Sembunyikan baris jika tidak cocok
+            }
+        });
+    });
+</script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

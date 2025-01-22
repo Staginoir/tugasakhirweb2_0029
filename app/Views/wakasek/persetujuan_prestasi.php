@@ -6,6 +6,9 @@
     <title>Persetujuan Prestasi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,7 +66,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">PRESISADMIN</a>
+            <a class="navbar-brand" href="<?= base_url('wakasek/dashboard'); ?>">PRESISADMIN</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -86,6 +89,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="<?= base_url('wakasek/persetujuan_prestasi'); ?>">Persetujuan Prestasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="<?= base_url('wakasek/semua_prestasi'); ?>">Semua Prestasi</a>
                     </li>
                     <li>
                         <hr>
@@ -158,13 +164,13 @@
                                 </td>
                                 <td class="action-buttons">
                                 <?= csrf_field() ?>
-                                    <form action="/walikelas/approve/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                    <form action="/wakasek/approve/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
                                         <?= csrf_field(); ?>
-                                        <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                        <button type="submit" class="btn btn-success btn-sm btn-setujui">Setujui</button>
                                     </form>
-                                    <form action="/walikelas/reject/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
+                                    <form action="/wakasek/reject/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
                                         <?= csrf_field(); ?>
-                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                        <button type="submit" class="btn btn-danger btn-sm btn-tolak">Tolak</button>
                                     </form>
                                 </td>
 
@@ -182,6 +188,82 @@
             </div>
         </div>
     </div>
+    <script>
+    // Fungsi untuk mengonfirmasi logout menggunakan SweetAlert
+    document.querySelector('.nav-link[href="/logout"]').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah pengalihan halaman langsung
+        
+        // Menampilkan SweetAlert konfirmasi
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda akan keluar dari akun ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna memilih untuk logout, arahkan ke halaman logout
+                window.location.href = '/logout';
+            }
+        });
+    });
+</script>
+<script>
+    // Fungsi untuk mengonfirmasi aksi Setujui menggunakan SweetAlert
+    document.querySelectorAll('.btn-setujui').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit langsung
+            
+            const form = this.closest('form'); // Ambil form terkait
+
+            // Menampilkan SweetAlert konfirmasi
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menyetujui prestasi ini.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, setujui!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna memilih untuk setujui, kirim form
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // Fungsi untuk mengonfirmasi aksi Tolak menggunakan SweetAlert
+    document.querySelectorAll('.btn-tolak').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit langsung
+            
+            const form = this.closest('form'); // Ambil form terkait
+
+            // Menampilkan SweetAlert konfirmasi
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menolak prestasi ini.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, tolak!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna memilih untuk tolak, kirim form
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

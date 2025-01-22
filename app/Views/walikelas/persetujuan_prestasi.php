@@ -6,6 +6,9 @@
     <title>Persetujuan Prestasi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,11 +84,14 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('walikelas/dashboard'); ?>">Dashboard</a>
+                <li class="nav-item">
+                        <a class="nav-link " href="<?= base_url('walikelas/dashboard'); ?>">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="<?= base_url('walikelas/persetujuan_prestasi'); ?>">Persetujuan Prestasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('walikelas/semua_prestasi'); ?>">Semua Prestasi</a>
                     </li>
                     <li>
                         <hr>
@@ -160,11 +166,11 @@
                                 <?= csrf_field() ?>
                                     <form action="/wakasek/approve/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
                                         <?= csrf_field(); ?>
-                                        <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                        <button type="submit" class="btn btn-success btn-sm btn-setujui">Setujui</button>
                                     </form>
                                     <form action="/wakasek/reject/<?= $prestasiItem['id_prestasi']; ?>" method="POST" class="d-inline">
                                         <?= csrf_field(); ?>
-                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                        <button type="submit" class="btn btn-danger btn-sm btn-tolak">Tolak</button>
                                     </form>
                                 </td>
                                     </tr>
@@ -180,6 +186,83 @@
             </div>
         </div>
     </div>
+    <script>
+    // Fungsi untuk mengonfirmasi logout menggunakan SweetAlert
+    document.querySelector('.nav-link[href="/logout"]').addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah pengalihan halaman langsung
+        
+        // Menampilkan SweetAlert konfirmasi
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda akan keluar dari akun ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna memilih untuk logout, arahkan ke halaman logout
+                window.location.href = '/logout';
+            }
+        });
+    });
+</script>
+<script>
+    // Fungsi untuk mengonfirmasi aksi Setujui menggunakan SweetAlert
+    document.querySelectorAll('.btn-setujui').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit langsung
+            
+            const form = this.closest('form'); // Ambil form terkait
+
+            // Menampilkan SweetAlert konfirmasi
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menyetujui prestasi ini.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, setujui!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna memilih untuk setujui, kirim form
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // Fungsi untuk mengonfirmasi aksi Tolak menggunakan SweetAlert
+    document.querySelectorAll('.btn-tolak').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit langsung
+            
+            const form = this.closest('form'); // Ambil form terkait
+
+            // Menampilkan SweetAlert konfirmasi
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menolak prestasi ini.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, tolak!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna memilih untuk tolak, kirim form
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
